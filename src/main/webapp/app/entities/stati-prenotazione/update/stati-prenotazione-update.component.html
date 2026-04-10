@@ -1,0 +1,97 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-stati-prenotazione-heading" data-cy="StatiPrenotazioneCreateUpdateHeading">Genera o modifica un Stati Prenotazione</h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let descrizioneRef = editForm.get('descrizione')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_descrizione">Descrizione</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descrizione"
+            id="field_descrizione"
+            data-cy="descrizione"
+            formControlName="descrizione"
+          />
+          @if (descrizioneRef.invalid && (descrizioneRef.dirty || descrizioneRef.touched)) {
+            <div>
+              @if (editForm.get('descrizione')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let codiceRef = editForm.get('codice')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_codice">Codice</label>
+          <select class="form-control" name="codice" formControlName="codice" id="field_codice" data-cy="codice">
+            <option [ngValue]="null"></option>
+            @for (statoCodice of statoCodiceValues; track $index) {
+              <option [value]="statoCodice">
+                {{ { null: '', WAITING: 'WAITING', CONFIRMED: 'CONFIRMED', REJECTED: 'REJECTED', CANCELLED: 'CANCELLED' }[statoCodice] }}
+              </option>
+            }
+          </select>
+          @if (codiceRef.invalid && (codiceRef.dirty || codiceRef.touched)) {
+            <div>
+              @if (editForm.get('codice')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let ordineAzioneRef = editForm.get('ordineAzione')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_ordineAzione">Ordine Azione</label>
+          <input
+            type="number"
+            class="form-control"
+            name="ordineAzione"
+            id="field_ordineAzione"
+            data-cy="ordineAzione"
+            formControlName="ordineAzione"
+          />
+          @if (ordineAzioneRef.invalid && (ordineAzioneRef.dirty || ordineAzioneRef.touched)) {
+            <div>
+              @if (editForm.get('ordineAzione')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('ordineAzione')?.errors?.number"
+                >Questo campo dovrebbe essere un numero.</small
+              >
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Annulla</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salva</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

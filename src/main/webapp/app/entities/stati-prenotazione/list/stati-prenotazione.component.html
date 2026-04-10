@@ -1,0 +1,114 @@
+<div>
+  <h2 id="page-heading" data-cy="StatiPrenotazioneHeading">
+    <span>StatiPrenotaziones</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-stati-prenotazione"
+        [routerLink]="['/stati-prenotazione/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Genera un nuovo Stati Prenotazione</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (statiPrenotaziones().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Stati Prenotaziones found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descrizione">
+              <div class="d-flex">
+                <span>Descrizione</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="codice">
+              <div class="d-flex">
+                <span>Codice</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="ordineAzione">
+              <div class="d-flex">
+                <span>Ordine Azione</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (statiPrenotazione of statiPrenotaziones(); track trackId(statiPrenotazione)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/stati-prenotazione', statiPrenotazione.id, 'view']">{{ statiPrenotazione.id }}</a>
+              </td>
+              <td>{{ statiPrenotazione.descrizione }}</td>
+              <td>
+                {{
+                  { null: '', WAITING: 'WAITING', CONFIRMED: 'CONFIRMED', REJECTED: 'REJECTED', CANCELLED: 'CANCELLED' }[
+                    statiPrenotazione.codice ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ statiPrenotazione.ordineAzione }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/stati-prenotazione', statiPrenotazione.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">Visualizza</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/stati-prenotazione', statiPrenotazione.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Modifica</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(statiPrenotazione)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Elimina</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

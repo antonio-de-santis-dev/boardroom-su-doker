@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <!--
+    Seed degli stati di sistema obbligatori.
+    NON usa il contesto faker — viene eseguito sempre, anche in prod.
+    NOTA: gli ID devono essere UUID validi (formato 8-4-4-4-12 hex).
+    La preCondition evita duplicati se il DB ha già questi record.
+  -->
+  <changeSet id="20260410000001_seed_stati" author="boardroom">
+
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        SELECT COUNT(*) FROM stati_prenotazione WHERE codice = 'CONFIRMED'
+      </sqlCheck>
+    </preConditions>
+
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000001"/>
+      <column name="codice"        value="WAITING"/>
+      <column name="descrizione"   value="VALIDAZIONE PRENOTAZIONE IN CORSO"/>
+      <column name="ordine_azione" valueNumeric="10"/>
+    </insert>
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000002"/>
+      <column name="codice"        value="CONFIRMED"/>
+      <column name="descrizione"   value="CONFERMATA"/>
+      <column name="ordine_azione" valueNumeric="20"/>
+    </insert>
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000003"/>
+      <column name="codice"        value="CANCELLED"/>
+      <column name="descrizione"   value="CANCELLATA"/>
+      <column name="ordine_azione" valueNumeric="30"/>
+    </insert>
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000004"/>
+      <column name="codice"        value="REJECTED"/>
+      <column name="descrizione"   value="RIFIUTATA"/>
+      <column name="ordine_azione" valueNumeric="40"/>
+    </insert>
+
+  </changeSet>
+
+</databaseChangeLog>

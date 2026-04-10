@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conferma Prenotazione</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f0f4f8; font-family: 'DM Sans', Helvetica, Arial, sans-serif">
+    <!-- Wrapper -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f0f4f8; padding: 48px 0">
+      <tr>
+        <td align="center">
+          <!-- Card -->
+          <table
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 600px;
+              width: 100%;
+              border-radius: 16px;
+              overflow: hidden;
+              background-color: #ffffff;
+              border: 1px solid #e2e8f0;
+              box-shadow:
+                0 4px 24px rgba(74, 140, 64, 0.07),
+                0 1px 4px rgba(0, 0, 0, 0.04);
+            "
+          >
+            <!-- HEADER -->
+            <tr>
+              <td style="background: #ffffff; padding: 28px 40px 24px; border-bottom: 2px solid #4a8c40">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <img src="cid:logoimg" alt="Boardroom" width="140" style="display: block; max-width: 140px" />
+                    </td>
+                    <td align="right" style="vertical-align: middle">
+                      <span
+                        style="
+                          font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                          font-size: 11px;
+                          font-weight: 700;
+                          letter-spacing: 3px;
+                          text-transform: uppercase;
+                          color: #4a8c40;
+                        "
+                      >
+                        BOARDROOM
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- HERO SECTION -->
+            <tr>
+              <td
+                style="
+                  background: linear-gradient(160deg, #f6faf5 0%, #ffffff 100%);
+                  padding: 40px 40px 32px;
+                  border-bottom: 1px solid #e2e8f0;
+                "
+              >
+                <!-- Badge stato -->
+                <p
+                  style="
+                    margin: 0 0 20px;
+                    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    color: #4a8c40;
+                    background: #f0f9ee;
+                    border: 1px solid #c3e6bc;
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    display: inline-block;
+                  "
+                >
+                  ✓ &nbsp;Prenotazione Confermata
+                </p>
+
+                <!-- Titolo evento -->
+                <h1
+                  style="
+                    margin: 0 0 6px;
+                    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                    font-size: 32px;
+                    font-weight: 800;
+                    line-height: 1.2;
+                    color: #1e293b;
+                    letter-spacing: -0.5px;
+                  "
+                  th:text="${titoloEvento}"
+                >
+                  Titolo Evento
+                </h1>
+
+                <!-- Saluto -->
+                <p
+                  style="
+                    margin: 20px 0 0;
+                    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                    font-size: 15px;
+                    font-weight: 400;
+                    color: #64748b;
+                    line-height: 1.6;
+                  "
+                >
+                  Ciao <span style="color: #334155; font-weight: 700" th:text="${nome} + ' ' + ${cognome}">Nome Cognome</span>,<br />
+                  il tuo posto è riservato. Qui trovi tutti i dettagli della tua prenotazione.
+                </p>
+              </td>
+            </tr>
+
+            <!-- DETTAGLI EVENTO -->
+            <tr>
+              <td style="padding: 36px 40px; background: #ffffff; border-bottom: 1px solid #e2e8f0">
+                <p
+                  style="
+                    margin: 0 0 22px;
+                    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                    font-size: 10px;
+                    font-weight: 700;
+                    letter-spacing: 3px;
+                    text-transform: uppercase;
+                    color: #94a3b8;
+                  "
+                >
+                  Dettagli Evento
+                </p>
+
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <!-- Data -->
+                    <td width="50%" style="padding-bottom: 24px; vertical-align: top">
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding-right: 12px; vertical-align: top; padding-top: 2px">
+                            <div
+                              style="
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 8px;
+                                background: #f0f9ee;
+                                text-align: center;
+                                line-height: 36px;
+                                font-size: 16px;
+                              "
+                            >
+                              📅
+                            </div>
+                          </td>
+                          <td style="vertical-align: top">
+                            <p
+                              style="
+                                margin: 0 0 3px;
+                                font-size: 10px;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                color: #94a3b8;
+                                font-weight: 700;
+                              "
+                            >
+                              Data
+                            </p>
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b" th:text="${dataPrenotazione}">
+                              01 Gennaio 2025
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <!-- Orario -->
+                    <td width="50%" style="padding-bottom: 24px; vertical-align: top">
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding-right: 12px; vertical-align: top; padding-top: 2px">
+                            <div
+                              style="
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 8px;
+                                background: #f0f9ee;
+                                text-align: center;
+                                line-height: 36px;
+                                font-size: 16px;
+                              "
+                            >
+                              🕐
+                            </div>
+                          </td>
+                          <td style="vertical-align: top">
+                            <p
+                              style="
+                                margin: 0 0 3px;
+                                font-size: 10px;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                color: #94a3b8;
+                                font-weight: 700;
+                              "
+                            >
+                              Orario
+                            </p>
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b">
+                              <span th:text="${oraInizio}">09:00</span>
+                              <span style="color: #94a3b8; font-size: 14px; font-weight: 400"> — </span>
+                              <span th:text="${oraFine}">18:00</span>
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <!-- Sala -->
+                    <td width="50%" style="vertical-align: top">
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding-right: 12px; vertical-align: top; padding-top: 2px">
+                            <div
+                              style="
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 8px;
+                                background: #f0f9ee;
+                                text-align: center;
+                                line-height: 36px;
+                                font-size: 16px;
+                              "
+                            >
+                              🏛️
+                            </div>
+                          </td>
+                          <td style="vertical-align: top">
+                            <p
+                              style="
+                                margin: 0 0 3px;
+                                font-size: 10px;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                color: #94a3b8;
+                                font-weight: 700;
+                              "
+                            >
+                              Sala
+                            </p>
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b" th:text="${salaNome}">
+                              Sala Principale
+                            </p>
+                            <p style="margin: 3px 0 0; font-size: 12px; color: #94a3b8" th:text="'Capienza: ' + ${salaCapienza} + ' posti'">
+                              Capienza: 50 posti
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <!-- Tipo -->
+                    <td width="50%" style="vertical-align: top">
+                      <table cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding-right: 12px; vertical-align: top; padding-top: 2px">
+                            <div
+                              style="
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 8px;
+                                background: #f0f9ee;
+                                text-align: center;
+                                line-height: 36px;
+                                font-size: 16px;
+                              "
+                            >
+                              🎯
+                            </div>
+                          </td>
+                          <td style="vertical-align: top">
+                            <p
+                              style="
+                                margin: 0 0 3px;
+                                font-size: 10px;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                color: #94a3b8;
+                                font-weight: 700;
+                              "
+                            >
+                              Tipo
+                            </p>
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b" th:text="${tipoEvento}">PUBBLICO</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- BIGLIETTO / QR -->
+            <tr>
+              <td style="padding: 32px 40px 36px; background: #f8faf7">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="border: 1.5px solid #c3e6bc; border-radius: 12px; background: #ffffff; overflow: hidden"
+                >
+                  <!-- Striscia verde in cima -->
+                  <tr>
+                    <td colspan="2" style="height: 4px; background: #4a8c40; font-size: 0; line-height: 0">&nbsp;</td>
+                  </tr>
+
+                  <tr>
+                    <!-- Codice prenotazione -->
+                    <td style="padding: 24px 28px; vertical-align: middle; border-right: 1.5px dashed #e2e8f0" width="55%">
+                      <p
+                        style="
+                          margin: 0 0 6px;
+                          font-size: 10px;
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          color: #94a3b8;
+                          font-weight: 700;
+                        "
+                      >
+                        Codice Prenotazione
+                      </p>
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 26px;
+                          font-weight: 800;
+                          color: #4a8c40;
+                          letter-spacing: 3px;
+                          font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+                        "
+                        th:text="${codicePre}"
+                      >
+                        BR-2025-001
+                      </p>
+                      <p style="margin: 14px 0 0; font-size: 11px; color: #94a3b8; line-height: 1.6">
+                        Presenta questo codice<br />o il QR code all'ingresso
+                      </p>
+                    </td>
+
+                    <!-- QR Code -->
+                    <td style="padding: 24px 28px; vertical-align: middle; text-align: center" width="45%">
+                      <img
+                        src="cid:qrcode"
+                        alt="QR Code"
+                        style="
+                          display: block;
+                          margin: 0 auto;
+                          width: 110px;
+                          height: 110px;
+                          border: 3px solid #e2e8f0;
+                          border-radius: 8px;
+                          background: #fff;
+                        "
+                      />
+                      <p style="margin: 8px 0 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #94a3b8">
+                        Scansiona all'ingresso
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- SEPARATORE INFO -->
+            <tr>
+              <td style="padding: 0 40px 28px; background: #f8faf7">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="background: #f0f9ee; border-radius: 8px; border: 1px solid #c3e6bc; padding: 14px 18px"
+                >
+                  <tr>
+                    <td>
+                      <p style="margin: 0; font-size: 12px; color: #4a8c40; font-weight: 600; line-height: 1.5">
+                        ℹ️ &nbsp;Ricordati di portare con te il codice prenotazione o questo QR code al momento dell'accesso.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td style="padding: 24px 40px; background: #ffffff; border-top: 1px solid #e2e8f0">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align: middle">
+                      <p style="margin: 0 0 4px; font-size: 13px; color: #64748b">
+                        Grazie per aver scelto
+                        <span style="color: #4a8c40; font-weight: 700">Boardroom</span>.
+                      </p>
+                      <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.6">
+                        Per assistenza:
+                        <a href="mailto:boardroom.progetto@gmail.com" style="color: #4a8c40; text-decoration: none; font-weight: 600">
+                          boardroom.progetto@gmail.com
+                        </a>
+                      </p>
+                    </td>
+                    <td align="right" style="vertical-align: middle">
+                      <p
+                        style="margin: 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #cbd5e1; font-weight: 700"
+                      >
+                        BOARDROOM © 2025
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Crea la tabella "ricorrenza" che rappresenta una regola di ripetizione.
+        Ogni prenotazione può essere collegata a una ricorrenza tramite la FK
+        aggiunta alla tabella "prenotazioni".
+
+        Strategia scelta: EAGER — tutte le occorrenze vengono generate subito
+        al momento della creazione, così la logica di lettura resta semplice
+        (nessuna generazione on-the-fly nelle query).
+
+        Relazione:
+            ricorrenza (1) ──< prenotazioni (N)
+    -->
+
+    <!-- 1. Tabella ricorrenza -->
+    <changeSet id="20260330000001_create_ricorrenza" author="boardroom">
+        <createTable tableName="ricorrenza">
+
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <!-- WEEKLY | BIWEEKLY | MONTHLY -->
+            <column name="frequenza" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Giorni della settimana selezionati (es: "MONDAY,WEDNESDAY,FRIDAY")
+                 Usato solo per WEEKLY e BIWEEKLY -->
+            <column name="giorni_settimana" type="varchar(100)"/>
+
+            <!-- Data di inizio della serie -->
+            <column name="data_inizio" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Data di fine della serie (alternativa a num_occorrenze) -->
+            <column name="data_fine" type="date"/>
+
+            <!-- Numero massimo di occorrenze (alternativa a data_fine) -->
+            <column name="num_occorrenze" type="integer"/>
+
+            <!-- Ora inizio comune a tutte le occorrenze -->
+            <column name="ora_inizio" type="${timeType}">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Ora fine comune a tutte le occorrenze -->
+            <column name="ora_fine" type="${timeType}">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- FK verso Sale -->
+            <column name="sala_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- FK verso Utenti (chi ha creato la serie) -->
+            <column name="utente_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Numero di persone comune a tutte le occorrenze -->
+            <column name="num_persone" type="integer"/>
+
+            <column name="created_at" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- 2. FK ricorrenza → sale -->
+    <changeSet id="20260330000002_ricorrenza_fk_sala" author="boardroom">
+        <addForeignKeyConstraint
+            baseTableName="ricorrenza"
+            baseColumnNames="sala_id"
+            constraintName="fk_ricorrenza_sala"
+            referencedTableName="sale"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- 3. FK ricorrenza → utenti -->
+    <changeSet id="20260330000003_ricorrenza_fk_utente" author="boardroom">
+        <addForeignKeyConstraint
+            baseTableName="ricorrenza"
+            baseColumnNames="utente_id"
+            constraintName="fk_ricorrenza_utente"
+            referencedTableName="utenti"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- 4. Aggiungi colonna ricorrenza_id alla tabella prenotazioni -->
+    <changeSet id="20260330000004_add_ricorrenza_to_prenotazioni" author="boardroom">
+        <addColumn tableName="prenotazioni">
+            <column name="ricorrenza_id" type="varchar(36)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- 5. FK prenotazioni → ricorrenza -->
+    <changeSet id="20260330000005_prenotazioni_fk_ricorrenza" author="boardroom">
+        <addForeignKeyConstraint
+            baseTableName="prenotazioni"
+            baseColumnNames="ricorrenza_id"
+            constraintName="fk_prenotazioni_ricorrenza"
+            referencedTableName="ricorrenza"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- 6. Indice su ricorrenza_id per query veloci "dammi tutte le istanze della serie" -->
+    <changeSet id="20260330000006_index_prenotazioni_ricorrenza" author="boardroom">
+        <createIndex tableName="prenotazioni" indexName="idx_prenotazioni_ricorrenza_id">
+            <column name="ricorrenza_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

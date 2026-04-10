@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista di attesa</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f0f4f8; font-family: 'DM Sans', Helvetica, Arial, sans-serif">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f0f4f8; padding: 48px 0">
+      <tr>
+        <td align="center">
+          <table
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 600px;
+              width: 100%;
+              border-radius: 16px;
+              overflow: hidden;
+              background-color: #ffffff;
+              border: 1px solid #e2e8f0;
+              box-shadow: 0 4px 24px rgba(74, 140, 64, 0.07);
+            "
+          >
+            <!-- HEADER -->
+            <tr>
+              <td style="background: #ffffff; padding: 24px 40px 20px; border-bottom: 2px solid #4a8c40">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td><img src="cid:logoimg" alt="Boardroom" width="130" style="display: block" /></td>
+                    <td align="right">
+                      <span style="font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #4a8c40"
+                        >BOARDROOM</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- CORPO -->
+            <tr>
+              <td
+                style="
+                  padding: 36px 40px 32px;
+                  background: linear-gradient(160deg, #fffdf0 0%, #ffffff 100%);
+                  border-bottom: 1px solid #e2e8f0;
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 18px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    color: #854f0b;
+                    background: #fff8e6;
+                    border: 1px solid #fac775;
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    display: inline-block;
+                  "
+                >
+                  &#9203; &nbsp;In lista di attesa
+                </p>
+
+                <h1 style="margin: 0 0 16px; font-size: 26px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px">
+                  Sei in lista di attesa
+                </h1>
+
+                <p style="margin: 0 0 24px; font-size: 15px; color: #64748b; line-height: 1.8">
+                  Ciao <strong style="color: #334155" th:text="${nomeUtente}">Nome</strong>,<br />
+                  lo slot che hai richiesto per la sala
+                  <strong style="color: #3b6d11" th:text="${nomeSala}">Sala</strong>
+                  il <strong style="color: #3b6d11" th:text="${dataPrenotazione}">01 Gennaio</strong> dalle
+                  <strong style="color: #3b6d11" th:text="${oraInizio} + ' alle ' + ${oraFine}">09:00 alle 10:00</strong> è attualmente
+                  occupato.<br /><br />
+                  Ti abbiamo inserito automaticamente in lista di attesa. Se qualcuno cancella, riceverai una notifica.
+                </p>
+
+                <!-- Badge posizione -->
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  width="100%"
+                  style="background: #fff8e6; border: 1px solid #fac775; border-radius: 12px; margin-bottom: 8px"
+                >
+                  <tr>
+                    <td style="padding: 20px 28px; text-align: center">
+                      <p
+                        style="
+                          margin: 0 0 6px;
+                          font-size: 11px;
+                          font-weight: 700;
+                          letter-spacing: 2px;
+                          text-transform: uppercase;
+                          color: #854f0b;
+                        "
+                      >
+                        La tua posizione in lista
+                      </p>
+                      <p style="margin: 0; font-size: 48px; font-weight: 900; color: #854f0b" th:text="${posizione}">1</p>
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="margin: 16px 0 0; font-size: 13px; color: #94a3b8; line-height: 1.6">
+                  Puoi cancellare la tua richiesta di attesa in qualsiasi momento dalla sezione "Le mie prenotazioni".
+                </p>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td style="padding: 22px 40px; background: #ffffff; border-top: 1px solid #e2e8f0">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <p style="margin: 0 0 4px; font-size: 13px; color: #64748b">
+                        Grazie per aver scelto <span style="color: #4a8c40; font-weight: 700">Boardroom</span>.
+                      </p>
+                      <p style="margin: 0; font-size: 11px; color: #94a3b8">
+                        <a href="mailto:boardroom.progetto@gmail.com" style="color: #4a8c40; text-decoration: none; font-weight: 600"
+                          >boardroom.progetto@gmail.com</a
+                        >
+                      </p>
+                    </td>
+                    <td align="right">
+                      <p
+                        style="margin: 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #cbd5e1; font-weight: 700"
+                      >
+                        BOARDROOM &copy; 2026
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Tabella "promemoria": configurazione dei promemoria per prenotazione.
+
+        Relazione: Prenotazioni (1) ──< Promemoria (N)
+        Ogni riga rappresenta UN tipo di promemoria attivato per UNA prenotazione.
+        Es: prenotazione X → WEEK_BEFORE + DAY_BEFORE
+
+        Strategia anti-duplicati:
+        - Colonna "inviato" (boolean): una volta inviato non viene riinviato
+        - Unique constraint su (prenotazione_id, tipo): impossibile duplicare lo stesso tipo
+    -->
+
+    <changeSet id="20260401000001_create_promemoria" author="boardroom">
+        <createTable tableName="promemoria">
+
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <!-- FK verso Prenotazioni -->
+            <column name="prenotazione_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+
+            <!--
+                Tipo di promemoria:
+                WEEK_BEFORE     = 7 giorni prima
+                TWO_DAYS_BEFORE = 2 giorni prima
+                DAY_BEFORE      = 1 giorno prima
+                SAME_DAY        = giorno stesso (ore 08:00)
+            -->
+            <column name="tipo" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- true se attivo, false se disattivato dall'utente -->
+            <column name="abilitato" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- true se l'email è già stata inviata (anti-duplicati) -->
+            <column name="inviato" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Timestamp dell'invio effettivo (per logging) -->
+            <column name="inviato_alle" type="${datetimeType}"/>
+
+            <column name="created_at" type="${datetimeType}">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- FK: promemoria → prenotazioni -->
+    <changeSet id="20260401000002_promemoria_fk_prenotazione" author="boardroom">
+        <addForeignKeyConstraint
+            baseTableName="promemoria"
+            baseColumnNames="prenotazione_id"
+            constraintName="fk_promemoria_prenotazione"
+            referencedTableName="prenotazioni"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Unique: una sola riga per (prenotazione, tipo) -->
+    <changeSet id="20260401000003_promemoria_unique" author="boardroom">
+        <addUniqueConstraint
+            tableName="promemoria"
+            columnNames="prenotazione_id, tipo"
+            constraintName="uq_promemoria_prenotazione_tipo"/>
+    </changeSet>
+
+    <!-- Indice per la query dello scheduler: trova i promemoria da inviare oggi -->
+    <changeSet id="20260401000004_promemoria_index" author="boardroom">
+        <createIndex tableName="promemoria" indexName="idx_promemoria_inviato_abilitato">
+            <column name="inviato"/>
+            <column name="abilitato"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

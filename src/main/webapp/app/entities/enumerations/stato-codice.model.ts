@@ -1,0 +1,9 @@
+export enum StatoCodice {
+  WAITING = 'WAITING',
+
+  CONFIRMED = 'CONFIRMED',
+
+  REJECTED = 'REJECTED',
+
+  CANCELLED = 'CANCELLED',
+}

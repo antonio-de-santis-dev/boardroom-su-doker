@@ -1,0 +1,66 @@
+<div class="settings-container">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-7">
+      <div class="settings-header text-center">
+        <h1 class="settings-title">Impostazioni Account</h1>
+        <p class="settings-subtitle">Gestisci le tue informazioni</p>
+      </div>
+
+      <div class="settings-card shadow-sm">
+        @if (success()) {
+          <div class="alert alert-success border-0 shadow-sm animate__animated animate__fadeIn">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            <strong>Profilo aggiornato!</strong> Le modifiche sono state salvate con successo.
+          </div>
+        }
+
+        <form name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" novalidate>
+          <div class="section-title">Informazioni Personali</div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <label class="form-label" for="firstName">Nome</label>
+              <div class="input-group-custom">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  name="firstName"
+                  formControlName="firstName"
+                  placeholder="Il tuo nome"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <label class="form-label" for="lastName">Cognome</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                name="lastName"
+                formControlName="lastName"
+                placeholder="Il tuo cognome"
+              />
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="email">Indirizzo Email</label>
+            <input type="email" class="form-control" id="email" name="email" formControlName="email" placeholder="nome@esempio.it" />
+            <div class="form-text mt-2">Questa email verrà utilizzata per le notifiche delle prenotazioni.</div>
+          </div>
+
+          <div class="actions-container">
+            <button type="submit" [disabled]="settingsForm.invalid || isLoading()" class="btn-save">
+              @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              <span>Salva Modifiche</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

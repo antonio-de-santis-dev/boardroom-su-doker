@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20260121111210"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "descrizione",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codice",
+      "fieldType": "StatoCodice",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WAITING,CONFIRMED,REJECTED,CANCELLED"
+    },
+    {
+      "fieldName": "ordineAzione",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "StatiPrenotazione",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

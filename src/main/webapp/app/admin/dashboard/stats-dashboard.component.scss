@@ -1,0 +1,781 @@
+// ─────────────────────────────────────────────────────────────
+// Boardroom – Admin Dashboard Styles
+// ─────────────────────────────────────────────────────────────
+
+$surface: #ffffff;
+$bg: #f8fafc;
+$border: #e2e8f0;
+$text-primary: #0f172a;
+$text-secondary: #475569;
+$text-muted: #94a3b8;
+$accent: #3b82f6;
+$green: #10b981;
+$purple: #8b5cf6;
+$orange: #f59e0b;
+$red: #ef4444;
+$radius: 12px;
+$radius-sm: 8px;
+$shadow-sm:
+  0 1px 3px rgba(0, 0, 0, 0.06),
+  0 1px 2px rgba(0, 0, 0, 0.04);
+$shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.07),
+  0 2px 4px -2px rgba(0, 0, 0, 0.04);
+
+// ── Page layout ──────────────────────────────────────────────
+
+.dash-page {
+  padding: 28px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  background: $bg;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+// ── Header ───────────────────────────────────────────────────
+
+.dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dash-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: $text-primary;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.dash-sub {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 2px 0 0;
+}
+
+// Periodo toggle
+.dash-periodo {
+  display: flex;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  padding: 3px;
+  gap: 2px;
+}
+
+.dash-periodo__btn {
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    color: $text-primary;
+  }
+
+  &.active {
+    background: $accent;
+    color: white;
+    font-weight: 700;
+    box-shadow: $shadow-sm;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ── Loading / Error ──────────────────────────────────────────
+
+.dash-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 0;
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.dash-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid $border;
+  border-top-color: $accent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.dash-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: $radius;
+  color: $red;
+  margin-bottom: 24px;
+
+  .dash-retry {
+    margin-left: auto;
+    padding: 6px 14px;
+    background: $red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+}
+
+// ── KPI Grid ─────────────────────────────────────────────────
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 18px 20px;
+  box-shadow: $shadow-sm;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+
+  &--blue {
+    background: #eff6ff;
+    color: $accent;
+  }
+  &--green {
+    background: #ecfdf5;
+    color: $green;
+  }
+  &--purple {
+    background: #f5f3ff;
+    color: $purple;
+  }
+  &--orange {
+    background: #fffbeb;
+    color: $orange;
+  }
+}
+
+.kpi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: $text-primary;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+// ── Chart grid ───────────────────────────────────────────────
+
+.chart-grid {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+
+  &--2col {
+    grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--3col {
+    grid-template-columns: 2fr 1fr;
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &--1col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &--donut {
+    max-width: 560px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid $border;
+  }
+
+  &__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    &--blue {
+      background: #eff6ff;
+      color: $accent;
+    }
+    &--green {
+      background: #ecfdf5;
+      color: $green;
+    }
+    &--purple {
+      background: #f5f3ff;
+      color: $purple;
+    }
+    &--orange {
+      background: #fffbeb;
+      color: $orange;
+    }
+  }
+
+  &__body {
+    padding: 18px 20px;
+    height: 260px;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    &--donut {
+      height: 300px;
+      canvas {
+        max-height: 280px;
+      }
+    }
+  }
+}
+
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: $text-muted;
+  font-size: 0.875rem;
+}
+
+// ── Gestione sale ────────────────────────────────────────────
+
+.sale-section {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  padding: 24px;
+  margin-top: 8px;
+}
+
+.sale-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sale-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.sale-sub {
+  font-size: 0.8125rem;
+  color: $text-muted;
+  margin: 2px 0 0;
+}
+
+.btn-nuova-sala {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: $accent;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+}
+
+.sale-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.sala-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  padding: 14px 16px;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: #cbd5e1;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__nome {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__capienza {
+    font-size: 0.78rem;
+    color: $text-secondary;
+  }
+
+  &__desc {
+    font-size: 0.75rem;
+    color: $text-muted;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+}
+
+.sala-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid $border;
+  border-radius: 7px;
+  background: $surface;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &--edit {
+    color: $accent;
+    &:hover {
+      background: #eff6ff;
+      border-color: $accent;
+    }
+  }
+
+  &--delete {
+    color: $red;
+    &:hover {
+      background: #fef2f2;
+      border-color: $red;
+    }
+  }
+}
+
+.sale-empty {
+  grid-column: 1 / -1;
+  padding: 30px;
+  text-align: center;
+  color: $text-muted;
+  font-size: 0.875rem;
+}
+
+// ── Modal ────────────────────────────────────────────────────
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 1040;
+}
+
+.modal-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $surface;
+  border-radius: $radius;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  width: 440px;
+  max-width: calc(100vw - 32px);
+
+  &--sm {
+    width: 380px;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 16px;
+  border-bottom: 1px solid $border;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.modal-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 50%;
+  cursor: pointer;
+  color: $text-muted;
+  font-size: 0.85rem;
+  &:hover {
+    background: $border;
+    color: $text-primary;
+  }
+}
+
+.modal-body {
+  padding: 20px 22px;
+
+  p {
+    font-size: 0.9rem;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+.form-field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input,
+  textarea {
+    padding: 9px 12px;
+    border: 1.5px solid $border;
+    border-radius: $radius-sm;
+    font-size: 0.9rem;
+    color: $text-primary;
+    transition: border-color 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+      box-shadow: 0 0 0 3px rgba($accent, 0.1);
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 22px;
+  border-top: 1px solid $border;
+  background: #f8fafc;
+  border-radius: 0 0 $radius $radius;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: $accent;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  justify-content: center;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  padding: 9px 16px;
+  background: $surface;
+  color: $text-secondary;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #f1f5f9;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-danger {
+  padding: 9px 18px;
+  background: $red;
+  color: white;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
+
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ── Bottone foto nella sala-card ──────────────────────────────
+.sala-btn--photo {
+  background: #f0f9ee;
+  color: #4a8c40;
+  border: 1px solid #c3e6bc;
+  font-size: 1rem;
+  &:hover {
+    background: #e0f2dc;
+  }
+}
+
+// ── Modal upload foto ─────────────────────────────────────────
+.foto-preview {
+  text-align: center;
+  margin-bottom: 16px;
+
+  &__img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  &__label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 6px;
+  }
+}
+
+.foto-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 10px;
+  margin-bottom: 16px;
+
+  &__icon {
+    font-size: 2.5rem;
+  }
+  &__text {
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+}
+
+.foto-drop-zone {
+  border: 2px dashed #c3e6bc;
+  border-radius: 10px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafffe;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  &:hover,
+  &--dragover {
+    border-color: #4a8c40;
+    background: #f0f9ee;
+  }
+
+  &__icon {
+    color: #4a8c40;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+
+  &__text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  &__sub {
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+}
+
+.foto-errore {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #dc2626;
+}
+
+// Footer con bottone rimuovi a sinistra e azioni a destra
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .footer-left {
+    flex: 1;
+  }
+  .footer-right {
+    display: flex;
+    gap: 10px;
+  }
+}

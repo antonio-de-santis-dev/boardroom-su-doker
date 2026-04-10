@@ -1,0 +1,434 @@
+// ─────────────────────────────────────────────────────────────
+// Boardroom – Ricorrenza Form Styles
+// ─────────────────────────────────────────────────────────────
+
+$accent: #3b82f6;
+$accent-light: #eff6ff;
+$green: #10b981;
+$green-light: #ecfdf5;
+$warn: #f59e0b;
+$warn-light: #fffbeb;
+$border: #e5e7eb;
+$surface: #ffffff;
+$surface-muted: #f9fafb;
+$text-primary: #111827;
+$text-secondary: #4b5563;
+$text-muted: #9ca3af;
+$radius: 10px;
+$radius-sm: 6px;
+$shadow-lg:
+  0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 10px 10px -5px rgba(0, 0, 0, 0.06);
+
+// Overlay scuro dietro il pannello
+.ric-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 1040;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Pannello principale
+.ric-panel {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: $surface;
+  border-radius: $radius $radius 0 0;
+  box-shadow: $shadow-lg;
+  z-index: 1050;
+  animation: slideUp 0.2s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+
+  @media (min-width: 640px) {
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: $radius;
+    max-height: 85vh;
+  }
+}
+
+// Header
+.ric-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid $border;
+}
+
+.ric-header__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: $accent-light;
+  color: $accent;
+  flex-shrink: 0;
+}
+
+.ric-header__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.ric-header__sub {
+  font-size: 0.8125rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.ric-close {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: $surface-muted;
+  border-radius: 50%;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $border;
+    color: $text-primary;
+  }
+}
+
+// Body
+.ric-body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+// Field base
+.ric-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ric-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ric-input,
+.ric-select {
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $text-primary;
+  transition: border-color 0.15s;
+  width: 100%;
+  appearance: auto;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.1);
+  }
+
+  &--mt {
+    margin-top: 8px;
+  }
+}
+
+// Row affiancata
+.ric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+    .ric-field:last-child {
+      grid-column: span 2;
+    }
+  }
+}
+
+// Frequenza bottoni
+.ric-freq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ric-freq-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  background: $surface;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__desc {
+    font-size: 0.725rem;
+    color: $text-muted;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  &:hover {
+    border-color: $accent;
+    background: $accent-light;
+  }
+
+  &.active {
+    border-color: $accent;
+    background: $accent-light;
+
+    .ric-freq-btn__label {
+      color: $accent;
+    }
+  }
+}
+
+// Giorni della settimana
+.ric-giorni {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ric-giorno {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid $border;
+  border-radius: 50%;
+  background: $surface;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $accent;
+    color: $accent;
+  }
+
+  &.active {
+    background: $accent;
+    border-color: $accent;
+    color: white;
+  }
+}
+
+// Fine serie toggle
+.ric-fine-toggle {
+  display: flex;
+  background: $surface-muted;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  padding: 3px;
+  gap: 2px;
+  width: fit-content;
+}
+
+.ric-fine-btn {
+  padding: 5px 14px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &.active {
+    background: $surface;
+    color: $text-primary;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.ric-occ-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+
+  .ric-input {
+    width: 120px;
+    flex-shrink: 0;
+  }
+}
+
+.ric-occ-label {
+  font-size: 0.875rem;
+  color: $text-secondary;
+}
+
+// Stima occorrenze
+.ric-stima {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: $accent-light;
+  border-radius: $radius-sm;
+  font-size: 0.8125rem;
+  color: $accent;
+  font-weight: 600;
+}
+
+// Risultato post-creazione
+.ric-risultato {
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__ok {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: $green-light;
+    border-radius: $radius-sm;
+    font-size: 0.9rem;
+    color: darken($green, 10%);
+  }
+
+  &__warn {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+    background: $warn-light;
+    border-radius: $radius-sm;
+    font-size: 0.8125rem;
+    color: darken($warn, 15%);
+    flex-wrap: wrap;
+  }
+
+  &__date {
+    background: rgba($warn, 0.2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+}
+
+// Footer
+.ric-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid $border;
+  background: $surface-muted;
+}
+
+.ric-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: $radius-sm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &--secondary {
+    background: $surface;
+    border: 1px solid $border;
+    color: $text-secondary;
+
+    &:hover {
+      background: $border;
+      color: $text-primary;
+    }
+  }
+
+  &--primary {
+    background: $accent;
+    color: white;
+
+    &:hover {
+      filter: brightness(1.08);
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.ric-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

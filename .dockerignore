@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Build Angular (verrà rigenerata durante il build Docker)
+target/classes/static/
+
+# Git e IDE
+.git/
+.idea/
+.vscode/
+*.iml
+
+# Test e coverage
+target/test-classes/
+target/surefire-reports/
+
+# File sensibili
+.env
+.env.local
+
+# Log
+*.log

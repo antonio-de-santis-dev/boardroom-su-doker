@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <!-- Aggiunge la posizione in waitlist alla prenotazione -->
+  <changeSet id="20260402000004_add_waitlist_to_prenotazioni" author="boardroom">
+    <addColumn tableName="prenotazioni">
+      <column name="posizione_waitlist" type="INT">
+        <constraints nullable="true"/>
+      </column>
+      <column name="promossa_at" type="datetime">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <!--
+      FIX: UUID validi (formato 8-4-4-4-12) e ordine_azione obbligatorio aggiunto.
+      I valori originali erano UUID malformati e mancava la colonna NOT NULL ordine_azione.
+  -->
+  <changeSet id="20260402000005_add_waitlist_stati" author="boardroom">
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000011"/>
+      <column name="codice"        value="WAITLISTED"/>
+      <column name="descrizione"   value="In lista di attesa"/>
+      <column name="ordine_azione" valueNumeric="50"/>
+    </insert>
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000012"/>
+      <column name="codice"        value="PROMOTED"/>
+      <column name="descrizione"   value="Promossa dalla waitlist, in attesa conferma"/>
+      <column name="ordine_azione" valueNumeric="60"/>
+    </insert>
+    <insert tableName="stati_prenotazione">
+      <column name="id"            value="00000000-0000-0000-0000-000000000013"/>
+      <column name="codice"        value="EXPIRED"/>
+      <column name="descrizione"   value="Scaduta, utente non ha confermato"/>
+      <column name="ordine_azione" valueNumeric="70"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

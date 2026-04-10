@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Aggiunge image_url alla tabella sale.
+
+        Soluzione MVP: salviamo solo il path relativo dell'immagine sul server.
+        Esempio: "/uploads/sale/uuid-sala.jpg"
+        Il frontend accede via GET /uploads/sale/uuid-sala.jpg (servito da Spring).
+
+        Valore null = nessuna immagine → frontend mostra il placeholder.
+    -->
+    <changeSet id="20260402000001_add_image_url_to_sale" author="boardroom">
+        <addColumn tableName="sale">
+            <column name="image_url" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,89 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-utenti-heading" data-cy="UtentiCreateUpdateHeading">Genera o modifica un Utenti</h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let nomeRef = editForm.get('nome')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nome">Nome</label>
+          <input type="text" class="form-control" name="nome" id="field_nome" data-cy="nome" formControlName="nome" />
+          @if (nomeRef.invalid && (nomeRef.dirty || nomeRef.touched)) {
+            <div>
+              @if (editForm.get('nome')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_nomeAzienda">Nome Azienda</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nomeAzienda"
+            id="field_nomeAzienda"
+            data-cy="nomeAzienda"
+            formControlName="nomeAzienda"
+          />
+        </div>
+
+        @let numeroDiTelefonoRef = editForm.get('numeroDiTelefono')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_numeroDiTelefono">Numero Di Telefono</label>
+          <input
+            type="text"
+            class="form-control"
+            name="numeroDiTelefono"
+            id="field_numeroDiTelefono"
+            data-cy="numeroDiTelefono"
+            formControlName="numeroDiTelefono"
+          />
+          @if (numeroDiTelefonoRef.invalid && (numeroDiTelefonoRef.dirty || numeroDiTelefonoRef.touched)) {
+            <div>
+              @if (editForm.get('numeroDiTelefono')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Annulla</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salva</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <!-- Indice su data: usato da findStorico, findExpiredWaiting, findByUtente -->
+  <changeSet id="20260302000001-1" author="boardroom">
+    <createIndex indexName="idx_prenotazioni_data"
+                 tableName="prenotazioni">
+      <column name="data"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Indice su stato_id: usato da findExpiredWaiting, existsOverlapping -->
+  <changeSet id="20260302000001-2" author="boardroom">
+    <createIndex indexName="idx_prenotazioni_stato_id"
+                 tableName="prenotazioni">
+      <column name="stato_id"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Indice su utente_id: usato da findByUtente_User_Login -->
+  <changeSet id="20260302000001-3" author="boardroom">
+    <createIndex indexName="idx_prenotazioni_utente_id"
+                 tableName="prenotazioni">
+      <column name="utente_id"/>
+    </createIndex>
+  </changeSet>
+
+  <!-- Indice composto (sala_id, data): usato da existsOverlapping e findBySalaId -->
+  <changeSet id="20260302000001-4" author="boardroom">
+    <createIndex indexName="idx_prenotazioni_sala_data"
+                 tableName="prenotazioni">
+      <column name="sala_id"/>
+      <column name="data"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

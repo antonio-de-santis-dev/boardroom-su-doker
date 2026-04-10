@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (utenti(); as utentiRef) {
+      <div>
+        <h2 data-cy="utentiDetailsHeading"><span>Utenti</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Id</span></dt>
+          <dd>
+            <span>{{ utentiRef.id }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ utentiRef.nome }}</span>
+          </dd>
+          <dt><span>Nome Azienda</span></dt>
+          <dd>
+            <span>{{ utentiRef.nomeAzienda }}</span>
+          </dd>
+          <dt><span>Numero Di Telefono</span></dt>
+          <dd>
+            <span>{{ utentiRef.numeroDiTelefono }}</span>
+          </dd>
+          <dt><span>User</span></dt>
+          <dd>
+            <span>{{ utentiRef.user?.id }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Indietro</span>
+        </button>
+
+        <button type="button" [routerLink]="['/utenti', utentiRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifica</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

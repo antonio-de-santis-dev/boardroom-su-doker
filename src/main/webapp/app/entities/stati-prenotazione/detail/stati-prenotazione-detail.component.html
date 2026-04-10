@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (statiPrenotazione(); as statiPrenotazioneRef) {
+      <div>
+        <h2 data-cy="statiPrenotazioneDetailsHeading"><span>Stati Prenotazione</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Id</span></dt>
+          <dd>
+            <span>{{ statiPrenotazioneRef.id }}</span>
+          </dd>
+          <dt><span>Descrizione</span></dt>
+          <dd>
+            <span>{{ statiPrenotazioneRef.descrizione }}</span>
+          </dd>
+          <dt><span>Codice</span></dt>
+          <dd>
+            <span>{{
+              { null: '', WAITING: 'WAITING', CONFIRMED: 'CONFIRMED', REJECTED: 'REJECTED', CANCELLED: 'CANCELLED' }[
+                statiPrenotazioneRef.codice ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span>Ordine Azione</span></dt>
+          <dd>
+            <span>{{ statiPrenotazioneRef.ordineAzione }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Indietro</span>
+        </button>
+
+        <button type="button" [routerLink]="['/stati-prenotazione', statiPrenotazioneRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifica</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,60 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: boardroom
+services:
+  app:
+    image: boardroom
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/boardroom?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+      - SPRING_LIQUIBASE_URL=jdbc:mysql://mysql:3306/boardroom?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+      # ── EMAIL (Gmail SMTP) ────────────────────────────────────────────────────
+      # IMPORTANTE: sostituisci le X con la tua App Password Gmail
+      # Per generarla: Account Google → Sicurezza → Verifica in 2 passaggi → Password per le app
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=boardroom.progetto@gmail.com
+      - SPRING_MAIL_PASSWORD=afoa dqgr blqy fhqt
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED=true
+      - JHIPSTER_MAIL_FROM=boardroom.progetto@gmail.com
+      # Cambia con il tuo dominio/IP se l'app è su un server remoto
+      - JHIPSTER_MAIL_BASE_URL=http://localhost:8080
+    ports:
+      - 127.0.0.1:8080:8080
+    volumes:
+      - boardroom_uploads:/app/uploads
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8080/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    extends:
+      file: ./mysql.yml
+      service: mysql
+
+  # ── MAILPIT (opzionale — solo per test locali, commenta se usi Gmail) ────────
+  # Decommentare per usare Mailpit al posto di Gmail in sviluppo locale.
+  # Interfaccia web su http://localhost:8025 per vedere le email inviate.
+  # Se attivi Mailpit, sostituisci le env Gmail sopra con:
+  #   - SPRING_MAIL_HOST=mailpit
+  #   - SPRING_MAIL_PORT=1025
+  #   - JHIPSTER_MAIL_FROM=boardroom@localhost
+  # mailpit:
+  #   image: axllent/mailpit:latest
+  #   ports:
+  #     - "8025:8025"   # Web UI
+  #     - "1025:1025"   # SMTP
+
+volumes:
+  boardroom_uploads:

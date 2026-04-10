@@ -1,0 +1,116 @@
+<div class="home-container">
+  <div class="hero-section">
+    @if (isLoading()) {
+      <div class="hero-loading">Caricamento eventi...</div>
+    }
+
+    @if (!isLoading() && eventi().length > 0) {
+      <div
+        class="hero-viewport"
+        #heroViewport
+        (mousedown)="onDragStart($event)"
+        (mousemove)="onDragMove($event)"
+        (mouseup)="onDragEnd($event)"
+        (mouseleave)="onDragEnd($event)"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+        [class.hero-dragging]="isDragging"
+      >
+        <div class="hero-track">
+          @for (evento of eventi(); track evento.id; let i = $index) {
+            <div class="hero-slide">
+              <div class="hero-img-col">
+                @if (evento.locandinaUrl || evento.salaImageUrl) {
+                  <img
+                    [class]="evento.locandinaUrl ? 'hero-img hero-img--locandina' : 'hero-img'"
+                    [src]="evento.locandinaUrl || evento.salaImageUrl"
+                    [alt]="evento.salaNome ?? 'Sala'"
+                    loading="lazy"
+                    (error)="onHeroImgError($event)"
+                  />
+                } @else {
+                  <div class="hero-img-placeholder">
+                    <span class="hero-img-sala">{{ evento.salaNome }}</span>
+                  </div>
+                }
+              </div>
+
+              <div class="hero-info-col">
+                <span class="hero-badge">Evento pubblico</span>
+                <h2 class="hero-title">{{ evento.titolo }}</h2>
+                <div class="hero-meta">
+                  <p class="hero-meta-row"><span class="hero-meta-label">Sala:</span> {{ evento.salaNome }}</p>
+                  <p class="hero-meta-row">
+                    <span class="hero-meta-label">Data/Ora:</span>
+                    {{ evento.data | date: 'dd MMMM' }} &ndash; {{ evento.oraInizio | slice: 0 : 5 }} / {{ evento.oraFine | slice: 0 : 5 }}
+                  </p>
+                  @if (evento.numPersone) {
+                    <p class="hero-meta-row">
+                      <span class="hero-meta-label">Posti:</span>
+                      <span [class.hero-esaurito]="evento.eventoPieno">
+                        {{ evento.postiOccupati ?? 0 }} / {{ evento.numPersone }}
+                        @if (evento.eventoPieno) {
+                          <em> — Esaurito</em>
+                        }
+                      </span>
+                    </p>
+                  }
+                </div>
+                <div class="hero-actions">
+                  <button class="hero-link" (click)="vaiADettagli(evento)">Vedi dettagli</button>
+                  <span class="hero-price">{{ evento.prezzo }}€</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="hero-dots">
+        @for (evento of eventi(); track evento.id; let i = $index) {
+          <button class="dot" [class.dot--active]="i === activeSlide" (click)="goToSlide(i)"></button>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="welcome-section">
+    <h2 class="welcome-title">Benvenuti in <span class="welcome-brand">Board</span>Room</h2>
+    <p class="welcome-text">
+      Gestisci i tuoi spazi di lavoro con un clic. In questa sezione trovi i workshop in evidenza, gli eventi formativi e le disponibilità
+      delle nostre sale più prestigiose. Prenota la tua prossima riunione in ambienti moderni, tecnologici e pronti a ospitare le tue idee.
+    </p>
+  </div>
+
+  <div class="feature-strip">
+    <div class="feature-item">
+      <i class="bi bi-calendar2-check feature-icon"></i>
+      <h4 class="feature-title">Disponibilità live</h4>
+      <p class="feature-desc">Orari e sale aggiornati in tempo reale</p>
+    </div>
+    <div class="feature-item">
+      <i class="bi bi-people feature-icon"></i>
+      <h4 class="feature-title">Pubblici e privati</h4>
+      <p class="feature-desc">Per ogni tipo di evento e occasione</p>
+    </div>
+    <div class="feature-item">
+      <i class="bi bi-check2 feature-icon"></i>
+      <h4 class="feature-title">Prenotazione rapida</h4>
+      <p class="feature-desc">Conferma in pochi clic, gestisci dal profilo</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="content/images/logo-jhipster.png" alt="Boardroom Logo" class="footer-logo-img" />
+      </div>
+      <p class="footer-copy">© 2026 BoardRoom · Tutti i diritti riservati</p>
+      <nav class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Termini</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,115 @@
+<div class="register-wrapper">
+  <div class="register-card">
+    <div class="register-header">
+      <h2 class="register-title">Crea il tuo account</h2>
+      <p class="register-subtitle">Inizia a prenotare le sale riunioni</p>
+    </div>
+
+    @if (success()) {
+      <div class="alert alert-success"><strong>Registrazione completata!</strong> Controlla la tua email per confermare l'account.</div>
+    }
+
+    @if (error() || errorUserExists() || errorEmailExists() || doNotMatch()) {
+      <div class="alert alert-danger">
+        @if (error()) {
+          <span>La registrazione è fallita. Riprova.</span>
+        }
+        @if (errorUserExists()) {
+          <span>Username già occupato.</span>
+        }
+        @if (errorEmailExists()) {
+          <span>Email già in uso.</span>
+        }
+        @if (doNotMatch()) {
+          <span>Le password non corrispondono.</span>
+        }
+      </div>
+    }
+
+    @if (!success()) {
+      <form (ngSubmit)="register()" [formGroup]="registerForm" class="register-form">
+        <div class="row-group">
+          <div class="input-group">
+            <label class="field-label">Nome</label>
+            <input type="text" class="figma-input" id="firstName" placeholder="Mario" formControlName="firstName" />
+          </div>
+          <div class="input-group">
+            <label class="field-label">Cognome</label>
+            <input type="text" class="figma-input" id="lastName" placeholder="Rossi" formControlName="lastName" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="field-label">Email</label>
+          <input type="email" class="figma-input" id="email" placeholder="info@gmail.com" formControlName="email" />
+        </div>
+
+        <div class="input-group">
+          <label class="field-label">Username</label>
+          <input #login type="text" class="figma-input" id="login" placeholder="Scegli un username" formControlName="login" />
+        </div>
+
+        <div class="row-group">
+          <div class="input-group">
+            <label class="field-label">Telefono</label>
+            <input type="text" class="figma-input" id="numeroDiTelefono" placeholder="+39..." formControlName="numeroDiTelefono" />
+          </div>
+          <div class="input-group">
+            <label class="field-label">Azienda <span class="optional">(Opzionale)</span></label>
+            <input type="text" class="figma-input" id="nomeAzienda" placeholder="Azienda" formControlName="nomeAzienda" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="field-label">Password</label>
+          <div class="password-input-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="figma-input"
+              id="password"
+              placeholder="Almeno 8 caratteri"
+              formControlName="password"
+            />
+            <button type="button" class="eye-btn" (click)="togglePassword()">
+              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
+
+          @if (registerForm.controls.password.value) {
+            <div class="strength-bar-wrapper">
+              <div class="strength-block" [class.active]="passwordStrength >= 1" [attr.data-level]="passwordStrength"></div>
+              <div class="strength-block" [class.active]="passwordStrength >= 2" [attr.data-level]="passwordStrength"></div>
+              <div class="strength-block" [class.active]="passwordStrength >= 3" [attr.data-level]="passwordStrength"></div>
+            </div>
+            <span
+              class="strength-label"
+              [style.color]="passwordStrength === 1 ? '#e74c3c' : passwordStrength === 2 ? '#f39c12' : '#4a8c40'"
+            >
+              {{ strengthLabel }}
+            </span>
+          }
+        </div>
+
+        <div class="input-group">
+          <label class="field-label">Conferma Password</label>
+          <input
+            type="password"
+            class="figma-input"
+            id="confirmPassword"
+            placeholder="Ripeti la password"
+            formControlName="confirmPassword"
+          />
+        </div>
+
+        <button type="submit" class="figma-btn" [disabled]="registerForm.invalid || isLoading">
+          {{ isLoading ? 'Creazione in corso...' : 'Crea account' }}
+        </button>
+      </form>
+    }
+
+    <div class="figma-footer">
+      <span class="small-text">Hai già un account?</span>
+      <a routerLink="/login" class="green-link"><strong>Accedi</strong></a>
+    </div>
+  </div>
+</div>

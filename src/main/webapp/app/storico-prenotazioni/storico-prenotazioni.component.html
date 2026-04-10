@@ -1,0 +1,114 @@
+<div class="storico-page">
+  <div class="storico-body">
+    <div class="storico-card">
+      <h1 class="storico-title">Storico prenotazioni</h1>
+      <p class="storico-sub">Visualizza tutte le tue prenotazioni passate</p>
+
+      <div class="storico-sep"></div>
+
+      <div class="filter-bar">
+        <button class="filter-pill" [class.active]="filtroAttivo() === 'tutte'" (click)="applicaFiltro('tutte')">Tutte</button>
+
+        <button class="filter-pill" [class.active]="filtroAttivo() === '30giorni'" (click)="applicaFiltro('30giorni')">
+          Ultimi 30 giorni
+        </button>
+
+        <button class="filter-pill" [class.active]="filtroAttivo() === 'annoCorrente'" (click)="applicaFiltro('annoCorrente')">
+          {{ annoCorrente }}
+        </button>
+
+        <div class="filter-sep"></div>
+
+        <button class="filter-date-pill" [class.active]="filtroAttivo() === 'singola'" (click)="applicaFiltro('singola')">
+          <fa-icon [icon]="faCalendar"></fa-icon>
+          <div class="filter-date-pill-text">
+            <span class="filter-date-pill-label">Giorno esatto</span>
+            <span class="filter-date-pill-value">{{ filtroDataSingola || 'seleziona data' }}</span>
+          </div>
+        </button>
+
+        <button
+          class="filter-date-pill"
+          [class.active]="filtroAttivo() === 'range'"
+          [class.filled]="filtroDataDal || filtroDataAl"
+          (click)="applicaFiltro('range')"
+        >
+          <fa-icon [icon]="faCalendarRange"></fa-icon>
+          <div class="filter-date-pill-text">
+            <span class="filter-date-pill-label">Intervallo</span>
+            <span class="filter-date-pill-value">
+              {{ filtroDataDal && filtroDataAl ? filtroDataDal + ' – ' + filtroDataAl : 'seleziona periodo' }}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      @if (filtroAttivo() === 'singola') {
+        <div class="date-input-row">
+          <input type="date" class="date-input" [(ngModel)]="filtroDataSingola" [max]="ieri" />
+          <button class="btn-cerca" (click)="cercaPerData()">Cerca</button>
+          <button class="btn-reset" (click)="resetFiltri()">Reset</button>
+        </div>
+      }
+
+      @if (filtroAttivo() === 'range') {
+        <div class="date-input-row">
+          <span class="date-input-label">Dal</span>
+          <input type="date" class="date-input" [(ngModel)]="filtroDataDal" [max]="ieri" />
+          <span class="date-input-label">Al</span>
+          <input type="date" class="date-input" [(ngModel)]="filtroDataAl" [max]="ieri" />
+          <button class="btn-cerca" (click)="cercaPerData()">Cerca</button>
+          <button class="btn-reset" (click)="resetFiltri()">Reset</button>
+        </div>
+      }
+
+      <div class="storico-sep"></div>
+
+      @if (isLoading()) {
+        <p class="storico-empty">Caricamento...</p>
+      } @else {
+        <div class="timeline-wrap">
+          <div class="timeline-line"></div>
+          <div class="timeline-entries">
+            @for (gruppo of gruppiMese(); track gruppo.mese) {
+              <div class="tl-month-label">{{ gruppo.mese }}</div>
+
+              @for (p of gruppo.items; track p.id) {
+                <div class="tl-item">
+                  <div class="tl-dot-col">
+                    <div
+                      class="tl-dot"
+                      [ngClass]="{
+                        'dot-green': p.stato?.codice?.toLowerCase() === 'confermata' || p.stato?.codice?.toLowerCase() === 'approvata',
+                        'dot-red': p.stato?.codice?.toLowerCase() === 'annullata' || p.stato?.codice?.toLowerCase() === 'rifiutata',
+                      }"
+                    ></div>
+                  </div>
+                  <div class="tl-card">
+                    <div class="tl-card-icon-wrap">
+                      <fa-icon [icon]="faCalendarDays"></fa-icon>
+                    </div>
+                    <div class="tl-card-body">
+                      <div class="tl-card-date">{{ convertToDate(p.data) | date: 'd MMMM yyyy' }}</div>
+                      <div class="tl-card-name">{{ p.sala?.nome || 'Sala non specificata' }}</div>
+                      <div class="tl-card-meta">
+                        {{ p.oraInizio }} – {{ p.oraFine }}
+                        <span class="tl-dot-sep"></span>
+                        {{ $any(p).partecipanti || '–' }} partecipanti
+                      </div>
+                    </div>
+                    <span class="tl-badge" [ngClass]="'badge-' + (p.stato?.codice?.toLowerCase() || 'conclusa')">
+                      {{ p.stato?.codice || 'Conclusa' }}
+                    </span>
+                  </div>
+                </div>
+              }
+            } @empty {
+              <p class="storico-empty">Nessuna prenotazione trovata per i criteri selezionati.</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

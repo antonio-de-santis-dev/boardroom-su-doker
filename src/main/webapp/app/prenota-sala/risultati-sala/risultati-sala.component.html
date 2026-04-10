@@ -1,0 +1,191 @@
+<div class="results-wrapper" [class.blur-background]="showPrivacyModal">
+  <div class="results-header">
+    <button class="btn-back" (click)="tornaIndietro()" [disabled]="isLoading">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Indietro
+    </button>
+    <h1 class="page-title">Sale disponibili</h1>
+  </div>
+
+  <div class="results-body">
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">LA TUA RICERCA</h3>
+
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div class="sidebar-item-text">
+            <span class="sidebar-label">Data</span>
+            <span class="sidebar-value">{{ dataRicerca | date: 'dd MMM yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div class="sidebar-item-text">
+            <span class="sidebar-label">Orario</span>
+            <span class="sidebar-value">{{ oraRicerca || '–' }}</span>
+          </div>
+        </div>
+
+        <div class="sidebar-item">
+          <div class="sidebar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="sidebar-item-text">
+            <span class="sidebar-label">Capienza</span>
+            <span class="sidebar-value">{{ capienzaRicerca }} persone</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="btn-modifica" (click)="tornaIndietro()">Modifica ricerca</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="results-meta">
+        <span class="results-label">Risultati per la tua selezione</span>
+        <span class="results-count">{{ sale.length }} {{ sale.length === 1 ? 'sala disponibile' : 'sale disponibili' }}</span>
+      </div>
+
+      @if (isLoading) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Ricerca sale in corso…</p>
+        </div>
+      }
+
+      @if (!isLoading && sale.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="2" y="7" width="20" height="14" rx="3"></rect>
+              <path d="M16 7V5a2 2 0 0 0-4 0v2"></path>
+            </svg>
+          </div>
+          <p>Nessuna sala disponibile per i criteri selezionati.</p>
+        </div>
+      }
+
+      @for (item of sale; track item.id) {
+        <div class="room-card">
+          <div class="room-img-col">
+            @if (item.imageUrl) {
+              <img class="room-img" [src]="item.imageUrl" [alt]="'Foto ' + item.nome" loading="lazy" (error)="onImgError($event)" />
+            } @else {
+              <div class="room-img-placeholder">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <rect x="2" y="7" width="20" height="14" rx="3"></rect>
+                  <path d="M16 7V5a2 2 0 0 0-4 0v2"></path>
+                </svg>
+              </div>
+            }
+          </div>
+
+          <div class="card-body">
+            <div class="card-top">
+              <div>
+                <h3 class="room-name">{{ item.nome }}</h3>
+                <p class="room-desc">{{ item.descrizione || 'Sala riunioni disponibile nella fascia selezionata' }}</p>
+              </div>
+              <span class="badge-available">Disponibile</span>
+            </div>
+
+            <div class="room-features">
+              <span class="feature-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                max {{ item.capienza }}
+              </span>
+              @for (feature of item.features || []; track feature) {
+                <span class="feature-badge">{{ feature }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="card-action">
+            <button class="btn-prenota" (click)="apriSceltaPrivacy(item)" [disabled]="isLoading">Prenota</button>
+          </div>
+        </div>
+      }
+    </main>
+  </div>
+</div>
+
+@if (showPrivacyModal) {
+  <div class="modal-overlay" (click)="chiudiModal($event)">
+    <div class="modal-card">
+      <button class="modal-close" (click)="showPrivacyModal = false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h2 class="modal-title">Tipo di evento</h2>
+      <p class="modal-subtitle">
+        Stai prenotando la <span class="modal-room-name">{{ salaSelezionata?.nome }}</span>
+      </p>
+
+      <div class="event-type-grid">
+        <div class="event-type-card" (click)="confermaEProcedi(true)" [class.loading]="isLoading">
+          <div class="event-icon event-icon--public">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <h4 class="event-type-title">Pubblico</h4>
+          <p class="event-type-desc">Visibile a tutti, aperto al pubblico</p>
+          <ul class="event-features-list">
+            <li>Biglietto con prezzo</li>
+            <li>Locandina evento</li>
+            <li>Ricorrenza</li>
+          </ul>
+        </div>
+
+        <div class="event-type-card" (click)="confermaEProcedi(false)" [class.loading]="isLoading">
+          <div class="event-icon event-icon--private">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h4 class="event-type-title">Privato</h4>
+          <p class="event-type-desc">Solo per invitati, uso interno</p>
+          <ul class="event-features-list">
+            <li>Solo nome e note</li>
+            <li>Ricorrenza</li>
+            <li class="disabled">Nessun biglietto</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conferma Prenotazione</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f0f4f8; font-family: 'DM Sans', Helvetica, Arial, sans-serif">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f0f4f8; padding: 48px 0">
+      <tr>
+        <td align="center">
+          <table
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 600px;
+              width: 100%;
+              border-radius: 16px;
+              overflow: hidden;
+              background-color: #ffffff;
+              border: 1px solid #e2e8f0;
+              box-shadow:
+                0 4px 24px rgba(74, 140, 64, 0.07),
+                0 1px 4px rgba(0, 0, 0, 0.04);
+            "
+          >
+            <!-- ══ HEADER ════════════════════════════════════════════════ -->
+            <tr>
+              <td style="background: #ffffff; padding: 24px 40px 20px; border-bottom: 2px solid #4a8c40">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align: middle">
+                      <img src="cid:logoimg" alt="Boardroom" width="130" style="display: block; max-width: 130px" />
+                    </td>
+                    <td align="right" style="vertical-align: middle">
+                      <span style="font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #4a8c40"
+                        >BOARDROOM</span
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- ══ IMMAGINE SALA come cid allegato ══════════════════════ -->
+            <tr th:if="${haSalaImage}">
+              <td style="padding: 0; line-height: 0; font-size: 0">
+                <img
+                  src="cid:salaimg"
+                  alt="Sala"
+                  style="width: 100%; max-width: 600px; height: 220px; object-fit: cover; display: block; border: 0"
+                />
+              </td>
+            </tr>
+            <!-- Placeholder verde se nessuna immagine -->
+            <tr th:unless="${haSalaImage}">
+              <td
+                style="
+                  background: linear-gradient(135deg, #3b6d11 0%, #5ca34d 100%);
+                  height: 100px;
+                  text-align: center;
+                  line-height: 100px;
+                  font-size: 13px;
+                  font-weight: 700;
+                  letter-spacing: 3px;
+                  text-transform: uppercase;
+                  color: rgba(255, 255, 255, 0.75);
+                "
+              >
+                BOARDROOM &nbsp;·&nbsp; SPAZI DI LAVORO
+              </td>
+            </tr>
+
+            <!-- ══ CORPO ══════════════════════════════════════════════════ -->
+            <tr>
+              <td
+                style="
+                  padding: 36px 40px 32px;
+                  background: linear-gradient(160deg, #f6faf5 0%, #ffffff 100%);
+                  border-bottom: 1px solid #e2e8f0;
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 20px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    color: #4a8c40;
+                    background: #f0f9ee;
+                    border: 1px solid #c3e6bc;
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    display: inline-block;
+                  "
+                >
+                  &#10003; &nbsp;Prenotazione Confermata
+                </p>
+
+                <h1
+                  style="margin: 0 0 20px; font-size: 28px; font-weight: 800; line-height: 1.2; color: #1e293b; letter-spacing: -0.5px"
+                  th:text="${titoloEvento}"
+                >
+                  Titolo Evento
+                </h1>
+
+                <p style="margin: 0 0 28px; font-size: 15px; color: #64748b; line-height: 1.8">
+                  Ciao <strong style="color: #334155" th:text="${nome} + ' ' + ${cognome}">Nome Cognome</strong>,<br />
+                  la tua prenotazione è avvenuta con successo.<br />
+                  Ti aspettiamo il
+                  <strong style="color: #3b6d11" th:text="${dataPrenotazione}">01 Gennaio</strong>
+                  alle
+                  <strong style="color: #3b6d11" th:text="${oraInizio} + ' - ' + ${oraFine}">09:00 - 10:00</strong><br />
+                  presso la nostra sala
+                  <strong style="color: #3b6d11" th:text="${salaNome}">Sala Principale</strong>.
+                </p>
+
+                <!-- Tipo evento e prezzo come testo semplice -->
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                    <td style="border-top: 1px solid #e2e8f0; padding-top: 20px">
+                      <p style="margin: 0 0 10px; font-size: 14px; color: #64748b">
+                        <span style="font-weight: 600; color: #334155">Tipo evento:</span>
+                        &nbsp;
+                        <span th:text="${tipoEvento}" style="color: #3b6d11; font-weight: 600">PRIVATO</span>
+                      </p>
+
+                      <p th:if="${eventoPubblico}" style="margin: 0; font-size: 14px; color: #64748b">
+                        <span style="font-weight: 600; color: #334155">Prezzo:</span>
+                        &nbsp;
+                        <span th:text="${prezzoEvento != null ? prezzoEvento + ' €' : 'Gratuito'}" style="color: #3b6d11; font-weight: 600"
+                          >12 €</span
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- ══ INFO BOX ════════════════════════════════════════════════ -->
+            <tr>
+              <td style="padding: 28px 40px; background: #f8faf7">
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="background: #f0f9ee; border-radius: 8px; border: 1px solid #c3e6bc; padding: 14px 18px"
+                >
+                  <tr>
+                    <td>
+                      <p style="margin: 0; font-size: 12px; color: #4a8c40; font-weight: 600; line-height: 1.6">
+                        Ricordati di presentarti in orario presso la sala indicata. Per qualsiasi necessità contattaci all'indirizzo
+                        sottostante.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+            <tr>
+              <td style="padding: 22px 40px; background: #ffffff; border-top: 1px solid #e2e8f0">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align: middle">
+                      <p style="margin: 0 0 4px; font-size: 13px; color: #64748b">
+                        Grazie per aver scelto
+                        <span style="color: #4a8c40; font-weight: 700">Boardroom</span>.
+                      </p>
+                      <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.6">
+                        Per assistenza:
+                        <a href="mailto:boardroom.progetto@gmail.com" style="color: #4a8c40; text-decoration: none; font-weight: 600">
+                          boardroom.progetto@gmail.com
+                        </a>
+                      </p>
+                    </td>
+                    <td align="right" style="vertical-align: middle">
+                      <p
+                        style="margin: 0; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #cbd5e1; font-weight: 700"
+                      >
+                        BOARDROOM &copy; 2026
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

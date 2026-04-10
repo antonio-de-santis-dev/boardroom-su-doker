@@ -1,0 +1,13 @@
+/*
+ * Bootstrap overrides https://getbootstrap.com/docs/5.1/customize/sass/
+ * All values defined in bootstrap source
+ * https://github.com/twbs/bootstrap/blob/v5.1.3/scss/_variables.scss can be overwritten here
+ * Make sure not to add !default to values here
+ */
+// In _bootstrap-variables.scss
+$primary: #4a8c40; // Il tuo verde BoardRoom
+$success: #4a8c40;
+$link-color: #4a8c40;
+
+// Se vuoi cambiare anche il font di base di Bootstrap
+$font-family-sans-serif: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

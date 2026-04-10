@@ -1,0 +1,215 @@
+$br-green: #4a8c40;
+$br-dark-slate: #334155;
+$br-text-main: #475569;
+$br-label-color: #94a3b8;
+$br-border-lux: #e2e8f0;
+$input-bg-soft: #fcfdfe;
+$bg-global: #ffffff;
+
+.booking-container {
+  padding: 40px 40px 80px;
+  background-color: $bg-global;
+  min-height: 100vh;
+  box-sizing: border-box;
+
+  .header-section {
+    margin-bottom: 32px;
+
+    .title-green {
+      color: $br-dark-slate;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: $br-label-color;
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+  }
+}
+
+.search-bar-card {
+  background: #ffffff;
+  padding: 32px 36px;
+  border-radius: 20px;
+  border: 1px solid $br-border-lux;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.field-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $br-green;
+  flex-shrink: 0;
+  margin-top: 18px;
+}
+
+.input-group-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+
+  label {
+    font-weight: 700;
+    font-size: 0.65rem;
+    color: $br-label-color;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+}
+
+.form-control-br {
+  border: 1px solid $br-border-lux;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: $input-bg-soft;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: $br-dark-slate;
+  width: 100%;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: $br-green;
+    box-shadow: 0 0 0 3px rgba($br-green, 0.08);
+  }
+}
+
+.select-wrapper {
+  position: relative;
+
+  select.form-control-br {
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $br-label-color;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+  }
+}
+.range-group {
+  .range-values {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $br-dark-slate;
+    margin-bottom: 4px;
+
+    .range-max {
+      font-size: 0.78rem;
+      color: $br-label-color;
+      font-weight: 500;
+    }
+  }
+}
+
+.form-range-br {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: $br-border-lux;
+  border-radius: 10px;
+  accent-color: $br-green;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: $br-green;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: $br-green;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid $br-border-lux;
+}
+
+.btn-annulla {
+  background: transparent;
+  color: $br-dark-slate;
+  border: 1px solid $br-border-lux;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 11px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+}
+
+.btn-conferma-br {
+  background-color: $br-green;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 11px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: darken($br-green, 5%);
+    box-shadow: 0 4px 12px rgba($br-green, 0.2);
+  }
+
+  &:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}

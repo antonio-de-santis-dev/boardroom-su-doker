@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (sale(); as saleRef) {
+      <div>
+        <h2 data-cy="saleDetailsHeading"><span>Sale</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Id</span></dt>
+          <dd>
+            <span>{{ saleRef.id }}</span>
+          </dd>
+          <dt><span>Nome</span></dt>
+          <dd>
+            <span>{{ saleRef.nome }}</span>
+          </dd>
+          <dt><span>Capienza</span></dt>
+          <dd>
+            <span>{{ saleRef.capienza }}</span>
+          </dd>
+          <dt><span>Descrizione</span></dt>
+          <dd>
+            <span>{{ saleRef.descrizione }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Indietro</span>
+        </button>
+
+        <button type="button" [routerLink]="['/sale', saleRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifica</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

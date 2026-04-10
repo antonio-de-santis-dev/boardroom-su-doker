@@ -1,0 +1,129 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-prenotazioni-heading" data-cy="PrenotazioniCreateUpdateHeading">Genera o modifica un Prenotazioni</h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dataRef = editForm.get('data')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_data">Data</label>
+          <div class="input-group">
+            <input
+              id="field_data"
+              data-cy="data"
+              type="text"
+              class="form-control"
+              name="data"
+              ngbDatepicker
+              #dataDp="ngbDatepicker"
+              formControlName="data"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dataDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (dataRef.invalid && (dataRef.dirty || dataRef.touched)) {
+            <div>
+              @if (editForm.get('data')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let oraInizioRef = editForm.get('oraInizio')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_oraInizio">Ora Inizio</label>
+          <input type="time" class="form-control" name="oraInizio" id="field_oraInizio" data-cy="oraInizio" formControlName="oraInizio" />
+          @if (oraInizioRef.invalid && (oraInizioRef.dirty || oraInizioRef.touched)) {
+            <div>
+              @if (editForm.get('oraInizio')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let oraFineRef = editForm.get('oraFine')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_oraFine">Ora Fine</label>
+          <input type="time" class="form-control" name="oraFine" id="field_oraFine" data-cy="oraFine" formControlName="oraFine" />
+          @if (oraFineRef.invalid && (oraFineRef.dirty || oraFineRef.touched)) {
+            <div>
+              @if (editForm.get('oraFine')?.errors?.required) {
+                <small class="form-text text-danger">Questo campo è obbligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_stato">Stato</label>
+          <select
+            class="form-control"
+            id="field_stato"
+            data-cy="stato"
+            name="stato"
+            formControlName="stato"
+            [compareWith]="compareStatiPrenotazione"
+          >
+            <option [ngValue]="null"></option>
+            @for (statiPrenotazioneOption of statiPrenotazionesSharedCollection; track $index) {
+              <option [ngValue]="statiPrenotazioneOption">{{ statiPrenotazioneOption.codice }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_utente">Utente</label>
+          <select
+            class="form-control"
+            id="field_utente"
+            data-cy="utente"
+            name="utente"
+            formControlName="utente"
+            [compareWith]="compareUtenti"
+          >
+            <option [ngValue]="null"></option>
+            @for (utentiOption of utentisSharedCollection; track $index) {
+              <option [ngValue]="utentiOption">{{ utentiOption.nome }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sala">Sala</label>
+          <select class="form-control" id="field_sala" data-cy="sala" name="sala" formControlName="sala" [compareWith]="compareSale">
+            <option [ngValue]="null"></option>
+            @for (saleOption of salesSharedCollection; track $index) {
+              <option [ngValue]="saleOption">{{ saleOption.nome }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Annulla</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salva</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

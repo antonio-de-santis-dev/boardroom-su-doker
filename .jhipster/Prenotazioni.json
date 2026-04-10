@@ -1,0 +1,63 @@
+{
+  "annotations": {
+    "changelogDate": "20260121111211"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "data",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "oraInizio",
+      "fieldType": "LocalTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "oraFine",
+      "fieldType": "LocalTime",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Prenotazioni",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "eventi",
+      "otherEntityRelationshipName": "prenotazione",
+      "relationshipName": "eventi",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "codice",
+      "otherEntityName": "statiPrenotazione",
+      "relationshipName": "stato",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nome",
+      "otherEntityName": "utenti",
+      "relationshipName": "utente",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nome",
+      "otherEntityName": "sale",
+      "otherEntityRelationshipName": "prenotazioni",
+      "relationshipName": "sala",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

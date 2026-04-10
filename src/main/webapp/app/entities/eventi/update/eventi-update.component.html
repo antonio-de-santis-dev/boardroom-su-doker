@@ -1,0 +1,60 @@
+<div class="ev-page">
+  <div class="ev-header">
+    <h1 class="ev-title">Modifica evento</h1>
+    <p class="ev-subtitle">Aggiorna titolo, descrizione e prezzo</p>
+  </div>
+
+  <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <jhi-alert-error />
+
+    @let titoloRef = editForm.get('titolo')!;
+    <div class="ev-field">
+      <label class="ev-label" for="field_titolo">NOME DELL'EVENTO</label>
+      <input type="text" id="field_titolo" class="ev-input" formControlName="titolo" placeholder="Esempio: Riunione settimanale" />
+      @if (titoloRef.invalid && (titoloRef.dirty || titoloRef.touched)) {
+        @if (titoloRef.errors?.required) {
+          <small class="ev-error">Questo campo è obbligatorio.</small>
+        }
+      }
+    </div>
+
+    <div class="ev-field">
+      <label class="ev-label" for="field_descrizione">DESCRIZIONE</label>
+      <textarea
+        id="field_descrizione"
+        class="ev-input ev-textarea"
+        formControlName="descrizione"
+        rows="4"
+        placeholder="Aggiungi qualche dettaglio..."
+      ></textarea>
+    </div>
+
+    <div class="ev-field">
+      <label class="ev-label" for="field_prezzo">PREZZO BIGLIETTO</label>
+      <div class="ev-price-wrap">
+        <span class="ev-currency">€</span>
+        <input
+          type="number"
+          id="field_prezzo"
+          class="ev-input ev-price-input"
+          formControlName="prezzo"
+          step="0.01"
+          min="0"
+          placeholder="0,00"
+        />
+      </div>
+      <small class="ev-hint">Lascia 0.00 per evento gratuito</small>
+    </div>
+
+    <div class="ev-actions">
+      <button type="button" class="ev-btn-annulla" (click)="previousState()">Annulla</button>
+      <button type="submit" class="ev-btn-salva" [disabled]="editForm.invalid || isSaving" [class.loading]="isSaving">
+        @if (isSaving) {
+          <span class="ev-loader"></span>
+        } @else {
+          Salva modifiche
+        }
+      </button>
+    </div>
+  </form>
+</div>

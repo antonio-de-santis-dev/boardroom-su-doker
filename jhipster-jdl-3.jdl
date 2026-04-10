@@ -1,0 +1,71 @@
+enum StatoCodice {
+  WAITING,
+  CONFIRMED,
+  REJECTED,
+  CANCELLED
+}
+
+enum TipoEvento {
+  PRIVATO,
+  PUBBLICO
+}
+
+entity Sale {
+  id UUID,
+  nome String required,
+  capienza Integer required,
+  descrizione String
+}
+
+entity Utenti {
+  id UUID,
+  nome String required,
+  nomeAzienda String,
+  numeroDiTelefono String required
+}
+
+entity StatiPrenotazione {
+  id UUID,
+  descrizione String required,
+  codice StatoCodice required,
+  ordineAzione Integer required
+}
+
+entity Prenotazioni {
+  id UUID,
+  data LocalDate required,
+  oraInizio LocalTime required,
+  oraFine LocalTime required
+}
+
+entity Eventi {
+  id UUID,
+  titolo String required,
+  tipo TipoEvento required,
+  prezzo BigDecimal
+}
+
+relationship OneToMany {
+  Sale{prenotazioni} to Prenotazioni{sala(nome)}
+}
+
+relationship ManyToOne {
+  Prenotazioni{stato(codice)} to StatiPrenotazione
+}
+
+relationship OneToMany {
+  Prenotazioni{eventi} to Eventi{prenotazione}
+}
+
+relationship ManyToOne {
+  Prenotazioni{utente(nome)} to Utenti
+}
+
+relationship OneToOne {
+  Utenti{user} to User with builtInEntity
+}
+
+paginate Sale, Eventi, Prenotazioni with pagination
+dto * with mapstruct
+service all with serviceClass except User, Authority
+

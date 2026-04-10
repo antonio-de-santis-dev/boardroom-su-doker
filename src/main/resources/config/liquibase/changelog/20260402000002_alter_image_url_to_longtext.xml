@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Modifica image_url da varchar(500) a LONGTEXT.
+
+        Motivo: l'immagine viene ora salvata come data URL Base64 direttamente
+        nel database (es: "data:image/jpeg;base64,/9j/4AAQ...").
+        Questo elimina qualsiasi dipendenza dal filesystem e dai path Windows,
+        che causavano 404 su tutti i tentativi precedenti.
+
+        Una immagine JPEG/PNG/WEBP da 2-5 MB in base64 occupa circa 2.7-6.8 MB
+        come stringa — quindi serve LONGTEXT (max 4 GB) invece di varchar(500).
+    -->
+    <changeSet id="20260402000002_alter_image_url_to_longtext" author="boardroom">
+        <modifyDataType
+            tableName="sale"
+            columnName="image_url"
+            newDataType="LONGTEXT"/>
+    </changeSet>
+
+</databaseChangeLog>

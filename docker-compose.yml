@@ -1,0 +1,87 @@
+name: boardroom
+
+services:
+
+  # ─── DATABASE MYSQL ──────────────────────────────────────────
+  mysql:
+    image: mysql:9.2.0
+    container_name: boardroom-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/main/docker/config/mysql:/etc/mysql/conf.d:ro
+    command: >
+      mysqld
+      --lower_case_table_names=1
+      --skip-mysqlx
+      --character_set_server=utf8mb4
+      --collation_server=utf8mb4_unicode_ci
+      --explicit_defaults_for_timestamp
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - boardroom-net
+
+  # ─── APPLICAZIONE SPRING BOOT + ANGULAR ──────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: boardroom-app
+    restart: unless-stopped
+    environment:
+      _JAVA_OPTIONS: ${JAVA_OPTIONS}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+
+      # Database
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SPRING_LIQUIBASE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+
+      # JWT
+      JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET: ${JWT_SECRET}
+
+      # E-Mail Gmail
+      SPRING_MAIL_HOST: ${MAIL_HOST}
+      SPRING_MAIL_PORT: ${MAIL_PORT}
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      JHIPSTER_MAIL_FROM: ${MAIL_FROM}
+      JHIPSTER_MAIL_BASE_URL: http://localhost:8080
+
+    ports:
+      - "0.0.0.0:8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/management/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    networks:
+      - boardroom-net
+
+# ─── VOLUMI PERSISTENTI ──────────────────────────────────────
+volumes:
+  mysql_data:
+    driver: local
+
+# ─── RETE INTERNA ────────────────────────────────────────────
+networks:
+  boardroom-net:
+    driver: bridge

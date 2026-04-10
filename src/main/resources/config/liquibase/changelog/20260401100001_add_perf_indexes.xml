@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="20260401100001-1" author="boardroom">
+    <createIndex
+      indexName="idx_prenotazioni_free_sala"
+      tableName="prenotazioni">
+      <column name="sala_id"/>
+      <column name="data"/>
+      <column name="ora_inizio"/>
+      <column name="ora_fine"/>
+      <column name="stato_id"/>
+    </createIndex>
+    <rollback>
+      <dropIndex indexName="idx_prenotazioni_free_sala" tableName="prenotazioni"/>
+    </rollback>
+  </changeSet>
+
+  <!--
+    Rimozione indice ridondante idx_prenotazioni_sala_data.
+    Il nuovo idx_prenotazioni_free_sala lo ingloba completamente.
+    MySQL usa sempre l'indice più specifico disponibile.
+
+    ATTENZIONE: verificare prima con SHOW INDEX FROM prenotazioni
+    che l'indice esista con esattamente questo nome.
+    Se il nome differisce, aggiornare questo changeSet.
+  -->
+  <changeSet id="20260401100001-2" author="boardroom">
+    <dropIndex indexName="idx_prenotazioni_sala_data" tableName="prenotazioni"/>
+    <rollback>
+      <createIndex indexName="idx_prenotazioni_sala_data" tableName="prenotazioni">
+        <column name="sala_id"/>
+        <column name="data"/>
+      </createIndex>
+    </rollback>
+  </changeSet>
+
+</databaseChangeLog>

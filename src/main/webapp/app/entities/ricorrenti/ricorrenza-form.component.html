@@ -1,0 +1,178 @@
+<div class="ric-overlay" (click)="annulla()"></div>
+
+<div class="ric-panel" role="dialog" aria-modal="true" aria-label="Nuova prenotazione ricorrente">
+  <!-- Header -->
+  <div class="ric-header">
+    <div class="ric-header__icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="1 4 1 10 7 10"></polyline>
+        <path d="M3.51 15a9 9 0 1 0 .49-4.5"></path>
+      </svg>
+    </div>
+    <div>
+      <h3 class="ric-header__title">Prenotazione ricorrente</h3>
+      <p class="ric-header__sub">Prenota automaticamente più date</p>
+    </div>
+    <button class="ric-close" (click)="annulla()" aria-label="Chiudi">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Risultato post-creazione -->
+  @if (risultato()) {
+    <div class="ric-risultato">
+      <div class="ric-risultato__ok">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <strong>{{ risultato()!.istanzeCreate }} prenotazioni create</strong>
+      </div>
+      @if (risultato()!.istanzeConflitto && risultato()!.istanzeConflitto! > 0) {
+        <div class="ric-risultato__warn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          {{ risultato()!.istanzeConflitto }} date saltate per conflitto:
+          @for (d of risultato()!.dateConflitto; track d) {
+            <span class="ric-risultato__date">{{ d }}</span>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Form -->
+  @if (!risultato()) {
+    <div class="ric-body">
+      <!-- Sala -->
+      <div class="ric-field">
+        <label class="ric-label">Sala</label>
+        <select class="ric-select" [(ngModel)]="salaId" name="salaId">
+          <option value="">— Seleziona sala —</option>
+          @for (sala of sale(); track sala.id) {
+            <option [value]="sala.id">{{ sala.nome }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Frequenza -->
+      <div class="ric-field">
+        <label class="ric-label">Frequenza</label>
+        <div class="ric-freq-grid">
+          @for (opt of frequenzaOptions; track opt.value) {
+            <button
+              class="ric-freq-btn"
+              [class.active]="frequenza === opt.value"
+              type="button"
+              (click)="frequenza = opt.value; onFrequenzaChange()"
+            >
+              <span class="ric-freq-btn__label">{{ opt.label }}</span>
+              <span class="ric-freq-btn__desc">{{ opt.desc }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Giorni della settimana (solo WEEKLY / BIWEEKLY) -->
+      @if (mostraGiorni) {
+        <div class="ric-field">
+          <label class="ric-label">Giorni della settimana</label>
+          <div class="ric-giorni">
+            @for (g of giorniOptions; track g.value) {
+              <button class="ric-giorno" [class.active]="isGiornoSelezionato(g.value)" type="button" (click)="toggleGiorno(g.value)">
+                {{ g.label.substring(0, 3) }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Orari -->
+      <div class="ric-row">
+        <div class="ric-field">
+          <label class="ric-label">Ora inizio</label>
+          <input class="ric-input" type="time" [(ngModel)]="oraInizio" name="oraInizio" />
+        </div>
+        <div class="ric-field">
+          <label class="ric-label">Ora fine</label>
+          <input class="ric-input" type="time" [(ngModel)]="oraFine" name="oraFine" />
+        </div>
+        <div class="ric-field">
+          <label class="ric-label">N° persone</label>
+          <input class="ric-input" type="number" [(ngModel)]="numPersone" name="numPersone" min="1" placeholder="—" />
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="ric-field">
+        <label class="ric-label">Data inizio</label>
+        <input class="ric-input" type="date" [(ngModel)]="dataInizio" name="dataInizio" [min]="oggi" />
+      </div>
+
+      <!-- Tipo fine serie -->
+      <div class="ric-field">
+        <label class="ric-label">Fine serie</label>
+        <div class="ric-fine-toggle">
+          <button class="ric-fine-btn" [class.active]="usaDataFine" type="button" (click)="usaDataFine = true">Per data</button>
+          <button class="ric-fine-btn" [class.active]="!usaDataFine" type="button" (click)="usaDataFine = false">Per occorrenze</button>
+        </div>
+
+        @if (usaDataFine) {
+          <input class="ric-input ric-input--mt" type="date" [(ngModel)]="dataFine" name="dataFine" [min]="dataInizio || oggi" />
+        } @else {
+          <div class="ric-occ-row">
+            <input
+              class="ric-input"
+              type="number"
+              [(ngModel)]="numOccorrenze"
+              name="numOccorrenze"
+              min="1"
+              max="365"
+              placeholder="es: 12"
+            />
+            <span class="ric-occ-label">ripetizioni</span>
+          </div>
+        }
+      </div>
+
+      <!-- Anteprima stima -->
+      @if (stimaOccorrenze) {
+        <div class="ric-stima">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          Stima: {{ stimaOccorrenze }}
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="ric-footer">
+      <button class="ric-btn ric-btn--secondary" type="button" (click)="annulla()">Annulla</button>
+      <button class="ric-btn ric-btn--primary" type="button" (click)="invia()" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span class="ric-spinner"></span> Creazione...
+        } @else {
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 .49-4.5"></path>
+          </svg>
+          Crea serie ricorrente
+        }
+      </button>
+    </div>
+  }
+
+  @if (risultato()) {
+    <div class="ric-footer">
+      <button class="ric-btn ric-btn--primary" type="button" (click)="annulla()">Chiudi</button>
+    </div>
+  }
+</div>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <property name="now"          value="now()"       dbms="h2"/>
+  <property name="floatType"    value="float4"      dbms="h2"/>
+  <property name="uuidType"     value="varchar(36)" dbms="h2"/>
+  <property name="datetimeType" value="datetime(6)" dbms="h2"/>
+  <property name="timeType"     value="time(6)"     dbms="h2"/>
+  <property name="clobType"     value="clob"        dbms="h2"/>
+  <property name="blobType"     value="blob"        dbms="h2"/>
+
+  <property name="now"          value="now()"       dbms="mysql"/>
+  <property name="floatType"    value="float"       dbms="mysql"/>
+  <property name="clobType"     value="clob"        dbms="mysql"/>
+  <property name="blobType"     value="longblob"    dbms="mysql"/>
+  <property name="uuidType"     value="varchar(36)" dbms="mysql"/>
+  <property name="datetimeType" value="datetime(6)" dbms="mysql"/>
+  <property name="timeType"     value="time(6)"     dbms="mysql"/>
+
+  <!-- Schema iniziale e entità base -->
+  <include file="config/liquibase/changelog/00000000000000_initial_schema.xml"                  relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111208_added_entity_Sale.xml"               relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111209_added_entity_Utenti.xml"             relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111210_added_entity_StatiPrenotazione.xml"  relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111211_added_entity_Prenotazioni.xml"       relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111212_added_entity_Eventi.xml"             relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260205_added_created_at_to_prenotazioni.xml"      relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111209_added_entity_constraints_Utenti.xml"          relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111211_added_entity_constraints_Prenotazioni.xml"    relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260121111212_added_entity_constraints_Eventi.xml"          relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260216_add_descrizione_to_eventi.xml"             relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260302000001_added_indexes_prenotazioni.xml"      relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260302000002_added_codice_qr_to_prenotazioni.xml" relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260303000001_add_num_persone_to_prenotazioni.xml" relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260304000002_create_prenotazione_evento_pubblico.xml" relativeToChangelogFile="false"/>
+
+  <!-- Nuove tabelle aggiunte nelle sessioni recenti -->
+  <include file="config/liquibase/changelog/20260330000001_create_ricorrenza.xml"     relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260401000001_create_promemoria.xml"     relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260402000001_add_image_url_to_sale.xml" relativeToChangelogFile="false"/>
+
+  <!-- FIX #01 — Indice composto per ottimizzazione findFreeSales (anti-join) -->
+  <include file="config/liquibase/changelog/20260401100001_add_perf_indexes.xml"      relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260402000002_alter_image_url_to_longtext.xml" relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260402000003_add_locandina_to_eventi.xml" relativeToChangelogFile="false"/>
+  <include file="config/liquibase/changelog/20260402000004_add_waitlist.xml" relativeToChangelogFile="false"/>
+
+  <!-- FIX #02 — Seed stati di sistema obbligatori (PENDING/CONFIRMED/REJECTED/CANCELLED/WAITING) -->
+  <include file="config/liquibase/changelog/20260410000001_seed_stati_prenotazione.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>

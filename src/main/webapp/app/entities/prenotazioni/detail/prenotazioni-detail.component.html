@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (prenotazioni(); as prenotazioniRef) {
+      <div>
+        <h2 data-cy="prenotazioniDetailsHeading"><span>Prenotazioni</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Id</span></dt>
+          <dd>
+            <span>{{ prenotazioniRef.id }}</span>
+          </dd>
+          <dt><span>Data</span></dt>
+          <dd>
+            <span>{{ prenotazioniRef.data | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Ora Inizio</span></dt>
+          <dd>
+            <span>{{ prenotazioniRef.oraInizio }}</span>
+          </dd>
+          <dt><span>Ora Fine</span></dt>
+          <dd>
+            <span>{{ prenotazioniRef.oraFine }}</span>
+          </dd>
+          <dt><span>Stato</span></dt>
+          <dd>
+            @if (prenotazioni()!.stato) {
+              <div>
+                <a [routerLink]="['/stati-prenotazione', prenotazioni()!.stato?.id, 'view']">{{ prenotazioniRef.stato?.codice }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Utente</span></dt>
+          <dd>
+            @if (prenotazioni()!.utente) {
+              <div>
+                <a [routerLink]="['/utenti', prenotazioni()!.utente?.id, 'view']">{{ prenotazioniRef.utente?.nome }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Sala</span></dt>
+          <dd>
+            @if (prenotazioni()!.sala) {
+              <div>
+                <a [routerLink]="['/sale', prenotazioni()!.sala?.id, 'view']">{{ prenotazioniRef.sala?.nome }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Indietro</span>
+        </button>
+
+        <button type="button" [routerLink]="['/prenotazioni', prenotazioniRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifica</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

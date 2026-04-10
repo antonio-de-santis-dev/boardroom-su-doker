@@ -1,0 +1,205 @@
+$boardroom-green: #4a8c40;
+$br-soft: #555555;
+$br-dark: #1a1a1a;
+$white: #ffffff;
+$bg-page: #ebebeb;
+$border-color: #d8d8d8;
+$label-color: #888888;
+
+:host {
+  display: block;
+  background-color: $bg-page;
+  min-height: calc(100vh - 100px);
+}
+
+.login-wrapper {
+  width: 100%;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px 80px;
+  background-color: $bg-page;
+}
+
+.login-card {
+  background: $white;
+  width: 100%;
+  max-width: 520px;
+  padding: 56px 64px;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: $br-dark;
+  margin-bottom: 6px;
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  color: $br-soft;
+  margin: 0;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.field-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: $label-color;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.figma-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid $border-color;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: $br-dark;
+  background-color: $white;
+  text-align: left;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: #c0c0c0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $boardroom-green;
+    box-shadow: 0 0 0 3px rgba($boardroom-green, 0.12);
+  }
+}
+
+.password-group {
+  gap: 6px;
+}
+
+.password-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-link {
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.password-input-wrapper {
+  position: relative;
+
+  .figma-input {
+    padding-right: 44px;
+  }
+}
+
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaaaaa;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $br-soft;
+  }
+}
+
+.figma-btn {
+  background-color: $boardroom-green !important;
+  color: $white !important;
+  border: none !important;
+  border-radius: 10px;
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+  box-shadow: 0 4px 14px rgba($boardroom-green, 0.25);
+
+  &:hover:not(:disabled) {
+    background-color: darken($boardroom-green, 6%) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.figma-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+.small-text {
+  color: $br-soft;
+}
+
+.green-link {
+  color: $boardroom-green !important;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px;
+  }
+}

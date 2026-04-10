@@ -1,0 +1,41 @@
+{
+  "annotations": {
+    "changelogDate": "20260121111212"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "titolo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "TipoEvento",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PRIVATO,PUBBLICO"
+    },
+    {
+      "fieldName": "prezzo",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "name": "Eventi",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "prenotazioni",
+      "otherEntityRelationshipName": "eventi",
+      "relationshipName": "prenotazione",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

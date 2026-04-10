@@ -1,0 +1,149 @@
+<nav data-cy="navbar" class="navbar navbar-expand-md fixed-top boardroom-nav">
+  <div class="container-fluid">
+    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
+      <img src="content/images/logo-jhipster.png" alt="Boardroom Logo" class="nav-logo" />
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="toggleNavbar()"
+      aria-controls="navbarResponsive"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <fa-icon icon="bars"></fa-icon>
+    </button>
+
+    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed()">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
+            <span>Bacheca</span>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="isActive('/mie-prenotazioni')">
+          <a
+            class="nav-link"
+            [class.active]="isActive('/mie-prenotazioni')"
+            (click)="navigazioneProtetta('/mie-prenotazioni')"
+            style="cursor: pointer"
+          >
+            <span>Le mie prenotazioni</span>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="isActive('/prenota-sala')">
+          <a
+            class="nav-link"
+            [class.active]="isActive('/prenota-sala')"
+            (click)="navigazioneProtetta('/prenota-sala')"
+            style="cursor: pointer"
+          >
+            <span>Prenota sala</span>
+          </a>
+        </li>
+
+        <li class="nav-item" [class.active]="isActive('/prenotazioni/calendar')">
+          <a
+            class="nav-link"
+            [class.active]="isActive('/prenotazioni/calendar')"
+            (click)="navigazioneProtetta('/prenotazioni/calendar')"
+            style="cursor: pointer"
+          >
+            <fa-icon icon="calendar-alt" class="me-1"></fa-icon>
+            <span>Calendario</span>
+          </a>
+        </li>
+
+        @if (hasAnyAuthority('ROLE_ADMIN')) {
+          <!-- Dashboard: link diretto, sempre visibile per admin -->
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link admin-link" routerLink="/admin/dashboard" (click)="collapseNavbar()">
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active">
+            <a class="nav-link dropdown-toggle admin-link" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
+              <span>Gestione</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu aria-labelledby="entity-menu">
+              <li><a class="dropdown-item" routerLink="/sale" (click)="collapseNavbar()">Sale</a></li>
+              <li><a class="dropdown-item" routerLink="/utenti" (click)="collapseNavbar()">Utenti</a></li>
+              <li><a class="dropdown-item" routerLink="/stati-prenotazione" (click)="collapseNavbar()">Stati</a></li>
+              <li><a class="dropdown-item" routerLink="/prenotazioni" (click)="collapseNavbar()">Prenotazioni</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="/prenotazioni/calendar" (click)="collapseNavbar()">
+                  <fa-icon icon="calendar-alt" [fixedWidth]="true"></fa-icon> Calendario sale
+                </a>
+              </li>
+              <li><a class="dropdown-item" routerLink="/eventi" (click)="collapseNavbar()">Eventi</a></li>
+            </ul>
+          </li>
+
+          <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active">
+            <a class="nav-link dropdown-toggle admin-link" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
+              <span>Amministrazione</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu aria-labelledby="admin-menu">
+              <li>
+                <a class="dropdown-item" routerLink="/admin/user-management" (click)="collapseNavbar()">
+                  <fa-icon icon="users" [fixedWidth]="true"></fa-icon> <span>Gestione utenti</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/metrics" (click)="collapseNavbar()">
+                  <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon> <span>Metriche</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/health" (click)="collapseNavbar()">
+                  <fa-icon icon="heart" [fixedWidth]="true"></fa-icon> <span>Integrità</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/configuration" (click)="collapseNavbar()">
+                  <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon> <span>Configurazione</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/logs" (click)="collapseNavbar()">
+                  <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon> <span>Log</span>
+                </a>
+              </li>
+              <li *ngIf="openAPIEnabled">
+                <a class="dropdown-item" routerLink="/admin/docs" (click)="collapseNavbar()">
+                  <fa-icon icon="book" [fixedWidth]="true"></fa-icon> <span>API</span>
+                </a>
+              </li>
+              <li class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="./h2-console/" target="_blank" (click)="collapseNavbar()">
+                  <fa-icon icon="database" [fixedWidth]="true"></fa-icon> <span>Database</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        }
+
+        <li class="nav-item ms-lg-2">
+          @let accountRef = account();
+          @if (accountRef !== null) {
+            <a class="nav-link p-0 profile-link-wrapper" routerLink="/profilo-utente" (click)="collapseNavbar()" title="Vai al mio profilo">
+              <div class="avatar-nav-wrapper">
+                <img *ngIf="accountRef?.imageUrl" [src]="accountRef!.imageUrl" class="profile-image-nav" alt="Avatar" />
+                <div *ngIf="!accountRef?.imageUrl" class="avatar-placeholder">
+                  <fa-icon icon="user"></fa-icon>
+                </div>
+              </div>
+            </a>
+          } @else {
+            <button class="btn btn-login-green" (click)="login()">Login</button>
+          }
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

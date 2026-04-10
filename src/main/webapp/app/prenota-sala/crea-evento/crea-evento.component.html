@@ -1,0 +1,256 @@
+<div class="ce-page">
+  <div class="ce-header">
+    <div class="ce-header-left">
+      <h1 class="ce-title">Dettagli evento</h1>
+      <p class="ce-subtitle">
+        Stai prenotando la <span class="sala-pill">{{ evento.nomeSala }}</span>
+      </p>
+    </div>
+    <span class="evento-tipo-badge" [class.pubblico]="isPubblico" [class.privato]="!isPubblico">
+      {{ isPubblico ? 'Evento pubblico' : 'Evento privato' }}
+    </span>
+  </div>
+
+  <div class="ce-form">
+    <div class="ce-field">
+      <label class="ce-label" for="titolo">NOME DELL'EVENTO</label>
+      <input
+        id="titolo"
+        type="text"
+        class="ce-input"
+        [(ngModel)]="evento.titolo"
+        placeholder="Esempio: Riunione settimanale"
+        name="titolo"
+      />
+    </div>
+
+    <div class="ce-field">
+      <label class="ce-label" for="descrizione">DESCRIZIONE</label>
+      <textarea
+        id="descrizione"
+        class="ce-input ce-textarea"
+        [(ngModel)]="evento.descrizione"
+        rows="4"
+        placeholder="Aggiungi qualche dettaglio..."
+        name="descrizione"
+      ></textarea>
+    </div>
+
+    @if (isPubblico) {
+      <div class="ce-section-title">BIGLIETTERIA</div>
+
+      <div class="ce-field">
+        <label class="ce-label" for="prezzo">PREZZO BIGLIETTO</label>
+        <div class="ce-price-input-wrap">
+          <span class="ce-currency">€</span>
+          <input
+            id="prezzo"
+            type="number"
+            class="ce-input ce-price-input"
+            [(ngModel)]="evento.prezzo"
+            placeholder="0,00"
+            name="prezzo"
+            min="0"
+            step="0.5"
+          />
+        </div>
+        <small class="ce-hint">Lascia 0.00 per evento gratuito</small>
+        <div class="ce-quick-chips">
+          <button type="button" class="ce-chip" [class.active]="evento.prezzo === 0" (click)="evento.prezzo = 0">Gratuito</button>
+          <button type="button" class="ce-chip" [class.active]="evento.prezzo === 5" (click)="evento.prezzo = 5">€ 5</button>
+          <button type="button" class="ce-chip" [class.active]="evento.prezzo === 10" (click)="evento.prezzo = 10">€ 10</button>
+          <button type="button" class="ce-chip" [class.active]="evento.prezzo === 15" (click)="evento.prezzo = 15">€ 15</button>
+          <button type="button" class="ce-chip" [class.active]="evento.prezzo === 20" (click)="evento.prezzo = 20">€ 20</button>
+        </div>
+      </div>
+
+      <div class="ce-field">
+        <label class="ce-label"> LOCANDINA EVENTO <span class="ce-optional">(opzionale)</span> </label>
+        <div
+          class="ce-upload-area"
+          [class.has-image]="locandinaPreview"
+          (click)="triggerLocandinaInput()"
+          (dragover)="$event.preventDefault()"
+          (drop)="onLocandrinaDrop($event)"
+        >
+          @if (locandinaPreview) {
+            <img [src]="locandinaPreview" class="ce-upload-preview" alt="Anteprima locandina" />
+            <button type="button" class="ce-upload-remove" (click)="rimuoviLocandina($event)">✕</button>
+          } @else {
+            <div class="ce-upload-placeholder">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              <p>Clicca o trascina un'immagine</p>
+              <small>JPG, PNG, WEBP · compressa automaticamente</small>
+            </div>
+          }
+        </div>
+        <input
+          #locandinaInput
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          style="display: none"
+          (change)="onLocandinaChange($event)"
+        />
+      </div>
+    }
+
+    @if (!isPubblico) {
+      <button type="button" class="ce-ricorrenza-btn" (click)="apriRicorrenzaModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>Aggiungi ricorrenza</span>
+
+        <span class="ce-ric-toggle" [class.on]="mostraRicorrenza">
+          <span class="ce-ric-toggle-knob"></span>
+        </span>
+      </button>
+
+      @if (mostraRicorrenza && ricorrenzaSummary) {
+        <div class="ce-ric-summary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 .49-4.5"></path>
+          </svg>
+          {{ ricorrenzaSummary }}
+          <button type="button" class="ce-ric-edit" (click)="apriRicorrenzaModal()">Modifica</button>
+        </div>
+      }
+    }
+
+    <div class="ce-actions">
+      <button type="button" class="ce-btn-annulla" (click)="annulla()" [disabled]="isLoading">Annulla</button>
+      <button
+        type="button"
+        class="ce-btn-finalizza"
+        (click)="conferma()"
+        [disabled]="isLoading || !evento.titolo"
+        [class.loading]="isLoading"
+      >
+        @if (isLoading) {
+          <span class="ce-loader"></span>
+        } @else {
+          {{ mostraRicorrenza ? 'Verifica disponibilità →' : 'Finalizza' }}
+        }
+      </button>
+    </div>
+  </div>
+</div>
+
+@if (showRicorrenzaModal) {
+  <div class="ric-overlay" (click)="chiudiRicorrenzaModal($event)">
+    <div class="ric-modal">
+      <div class="ric-modal-header">
+        <h2 class="ric-modal-title">Aggiungi ricorrenza</h2>
+        <p class="ric-modal-subtitle">Scegli quando si ripete questo evento</p>
+      </div>
+
+      <div class="ric-field">
+        <label class="ric-label">SI RIPETE</label>
+        <div class="ric-select-wrap">
+          <select class="ric-select" [(ngModel)]="ricorrenza.frequenza" (ngModelChange)="onFrequenzaChange()" name="frequenza">
+            @for (opt of frequenzaOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+          <svg class="ric-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      @if (mostraGiorni) {
+        <div class="ric-field">
+          <label class="ric-label">GIORNO</label>
+          <div class="ric-giorni">
+            @for (g of giorniOptions; track g.value) {
+              <button type="button" class="ric-giorno-pill" [class.active]="isGiornoSelezionato(g.value)" (click)="toggleGiorno(g.value)">
+                {{ g.label.substring(0, 3) }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <div class="ric-field">
+        <label class="ric-label">ORARIO</label>
+        <div class="ric-orario-row">
+          <input type="time" class="ric-time-input" [(ngModel)]="ricorrenza.oraInizio" name="oraInizio" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+          <input type="time" class="ric-time-input" [(ngModel)]="ricorrenza.oraFine" name="oraFine" />
+        </div>
+      </div>
+
+      <div class="ric-field">
+        <label class="ric-label">FINE RICORRENZA</label>
+        <div class="ric-fine-tabs">
+          <button type="button" class="ric-fine-tab" [class.active]="ricorrenza.tipoFine === 'mai'" (click)="ricorrenza.tipoFine = 'mai'">
+            Mai
+          </button>
+          <button type="button" class="ric-fine-tab" [class.active]="ricorrenza.tipoFine === 'data'" (click)="ricorrenza.tipoFine = 'data'">
+            Data
+          </button>
+          <button
+            type="button"
+            class="ric-fine-tab"
+            [class.active]="ricorrenza.tipoFine === 'occorrenze'"
+            (click)="ricorrenza.tipoFine = 'occorrenze'"
+          >
+            Dopo N volte
+          </button>
+        </div>
+
+        @if (ricorrenza.tipoFine === 'data') {
+          <input type="date" class="ric-input-text" [(ngModel)]="ricorrenza.dataFine" name="dataFine" [min]="evento.data" />
+        }
+        @if (ricorrenza.tipoFine === 'occorrenze') {
+          <div class="ric-occ-row">
+            <input
+              type="number"
+              class="ric-input-text ric-input--sm"
+              [(ngModel)]="ricorrenza.numOccorrenze"
+              name="numOccorrenze"
+              min="1"
+              max="365"
+              placeholder="es: 12"
+            />
+            <span class="ric-occ-label">ripetizioni</span>
+          </div>
+        }
+      </div>
+
+      @if (ricorrenzaModalSummary) {
+        <div class="ric-preview-box">
+          {{ ricorrenzaModalSummary }}
+        </div>
+      }
+
+      <div class="ric-modal-actions">
+        <button type="button" class="ric-btn-annulla" (click)="showRicorrenzaModal = false">Annulla</button>
+        <button type="button" class="ric-btn-conferma" (click)="confermaRicorrenza()">Conferma</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (fase === 'verifica') {
+  <div class="ric-overlay">
+    <div class="ric-modal ric-modal--loading">
+      <div class="verifica-spinner"></div>
+      <p>Verifica disponibilità in corso…</p>
+      <small>Controllo ogni data della serie</small>
+    </div>
+  </div>
+}

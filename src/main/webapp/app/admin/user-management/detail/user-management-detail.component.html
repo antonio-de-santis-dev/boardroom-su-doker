@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (user(); as userRef) {
+      <div>
+        <h2>
+          <span>Utente</span> [<strong>{{ userRef.login }}</strong
+          >]
+        </h2>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Login</span></dt>
+          <dd>
+            <span>{{ userRef.login }}</span>
+            @if (userRef.activated) {
+              <span class="badge bg-success">Attivato</span>
+            } @else {
+              <span class="badge bg-danger">Disattivato</span>
+            }
+          </dd>
+
+          <dt><span>Nome</span></dt>
+          <dd>{{ userRef.firstName }}</dd>
+
+          <dt><span>Cognome</span></dt>
+          <dd>{{ userRef.lastName }}</dd>
+
+          <dt><span>Email</span></dt>
+          <dd>{{ userRef.email }}</dd>
+
+          <dt><span>Creato da</span></dt>
+          <dd>{{ userRef.createdBy }}</dd>
+
+          <dt><span>Creato il</span></dt>
+          <dd>{{ userRef.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
+
+          <dt><span>Modificato da</span></dt>
+          <dd>{{ userRef.lastModifiedBy }}</dd>
+
+          <dt><span>Modificato il</span></dt>
+          <dd>{{ userRef.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
+
+          <dt><span>Profili</span></dt>
+          <dd>
+            <ul class="list-unstyled">
+              @for (authority of userRef.authorities; track $index) {
+                <li>
+                  <span class="badge bg-info">{{ authority }}</span>
+                </li>
+              }
+            </ul>
+          </dd>
+        </dl>
+
+        <button type="submit" routerLink="../../" class="btn btn-info">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Indietro</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,369 @@
+@use 'sass:color';
+
+$br-green: #4a8c40;
+$br-text-dark: #1e3a1a;
+$br-text-muted: #6b7280;
+$br-border: #e5e7eb;
+$br-bg: #f4f6f5;
+
+.br-viewport {
+  background: $br-bg;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.br-page {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+.br-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.br-photo {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+  background: #dde8da;
+}
+
+.br-sala-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  &--locandina {
+    object-fit: contain;
+    background: #f4f7f6;
+  }
+}
+
+.br-sala-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: linear-gradient(135deg, #f0f9ee 0%, #e8f5e4 100%);
+}
+
+.br-sold-out-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 20, 10, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.br-sold-out-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: rotate(-8deg);
+  padding: 16px 40px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.br-sold-out-text {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.br-sold-out-line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.br-meta-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: $br-text-muted;
+  margin-bottom: 8px;
+}
+
+.br-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $br-text-dark;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.br-desc {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: $br-text-muted;
+}
+
+.br-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.br-booking-card {
+  background: white;
+  border: 1px solid $br-border;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.br-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.br-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $br-text-dark;
+  letter-spacing: -0.03em;
+}
+
+.br-price-per {
+  font-size: 0.85rem;
+  color: $br-text-muted;
+}
+
+.br-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.br-seats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.br-seats-label {
+  font-size: 0.85rem;
+  color: $br-text-dark;
+}
+
+.br-seats-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $br-text-dark;
+}
+
+.br-posti-esauriti {
+  color: #dc2626 !important;
+}
+
+.br-bar {
+  height: 4px;
+  background: $br-border;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.br-bar-fill {
+  height: 100%;
+  background: $br-green;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.br-inline-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid $br-border;
+}
+
+.br-inline-form-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: $br-text-muted;
+}
+
+.br-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.br-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: $br-text-muted;
+  }
+
+  input {
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid $br-border;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: $br-text-dark;
+    background: white;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    width: 100%;
+
+    &::placeholder {
+      color: #b0bec5;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $br-green;
+    }
+  }
+}
+
+.br-btn-prenota {
+  width: 100%;
+  height: 46px;
+  background: white;
+  color: $br-text-dark;
+  border: 1.5px solid $br-border;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+
+  &:hover:not(:disabled) {
+    border-color: $br-green;
+    color: $br-green;
+  }
+
+  &:disabled,
+  &.br-btn-disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    border-color: $br-border;
+    cursor: not-allowed;
+  }
+}
+
+.br-btn-annulla {
+  width: 100%;
+  height: 46px;
+  background: white;
+  color: $br-text-muted;
+  border: 1.5px solid $br-border;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $br-text-dark;
+    border-color: #9ca3af;
+  }
+}
+
+.br-details-card {
+  background: white;
+  border: 1px solid $br-border;
+  border-radius: 16px;
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.br-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+}
+
+.br-detail-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $br-text-muted;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.br-detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.br-detail-main {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $br-text-dark;
+}
+
+.br-detail-sub {
+  font-size: 0.8rem;
+  color: $br-text-muted;
+}
+
+.br-divider {
+  height: 1px;
+  background: $br-border;
+  margin: 0 20px;
+}
+
+@media (max-width: 720px) {
+  .br-page {
+    grid-template-columns: 1fr;
+  }
+
+  .br-right {
+    order: -1;
+  }
+
+  .br-field-row {
+    grid-template-columns: 1fr;
+  }
+}

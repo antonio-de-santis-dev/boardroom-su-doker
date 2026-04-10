@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        Crea la tabella che traccia ogni prenotazione di posto per un evento pubblico.
+        Una riga per partecipante, codice univoco nel formato {codiceEvento}-{codicePersona}.
+        Esempio: daef3574-A01
+    -->
+    <changeSet id="20260304000002" author="boardroom">
+        <createTable tableName="prenotazione_evento_pubblico">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="evento_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nome" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cognome" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="codice_prenotazione" type="varchar(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_pep_codice"/>
+            </column>
+            <column name="created_at" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20260304000003" author="boardroom">
+        <addForeignKeyConstraint
+            baseTableName="prenotazione_evento_pubblico"
+            baseColumnNames="evento_id"
+            constraintName="fk_pep_evento"
+            referencedTableName="eventi"
+            referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="20260304000004" author="boardroom">
+        <createIndex tableName="prenotazione_evento_pubblico" indexName="idx_pep_evento_id">
+            <column name="evento_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
