@@ -16,9 +16,8 @@ import { ISale } from 'app/entities/sale/sale.model';
   styleUrls: ['./ricorrenza-form.component.scss'],
 })
 export class RicorrenzaFormComponent implements OnInit {
-  /** Emesso dopo creazione riuscita con il risultato */
   creata = output<IRicorrenza>();
-  /** Emesso se l'utente chiude/annulla il form */
+
   annullata = output<void>();
 
   private ricorrenzaService = inject(RicorrenzaService);
@@ -26,29 +25,25 @@ export class RicorrenzaFormComponent implements OnInit {
   private http = inject(HttpClient);
   private notify = inject(NotificationService);
 
-  // ── Stato form ────────────────────────────────────────
   sale = signal<ISale[]>([]);
   isLoading = signal(false);
   risultato = signal<IRicorrenza | null>(null);
 
-  // Opzioni
   readonly frequenzaOptions = FREQUENZA_OPTIONS;
   readonly giorniOptions = GIORNI_OPTIONS;
 
-  // Valori form
   salaId = '';
   frequenza: Frequenza = 'WEEKLY';
   giorniSelezionati: GiornoSettimana[] = [];
   dataInizio = '';
-  usaDataFine = true; // true = dataFine, false = numOccorrenze
+  usaDataFine = true;
   dataFine = '';
   numOccorrenze: number | null = null;
   oraInizio = '09:00';
   oraFine = '10:00';
   numPersone: number | null = null;
 
-  // Stato UI
-  mostraGiorni = true; // false per MONTHLY
+  mostraGiorni = true;
 
   readonly oggi = new Date().toISOString().split('T')[0];
 
@@ -74,7 +69,6 @@ export class RicorrenzaFormComponent implements OnInit {
     return this.giorniSelezionati.includes(giorno);
   }
 
-  /** Anteprima: quante occorrenze verranno generate (stima) */
   get stimaOccorrenze(): string {
     if (!this.dataInizio) return '';
     if (this.usaDataFine && this.dataFine) {

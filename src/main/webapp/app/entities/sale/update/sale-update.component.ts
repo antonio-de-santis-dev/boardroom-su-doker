@@ -24,7 +24,6 @@ export class SaleUpdateComponent implements OnInit {
   protected saleFormService = inject(SaleFormService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: SaleFormGroup = this.saleFormService.createSaleFormGroup();
 
   ngOnInit(): void {
@@ -61,9 +60,7 @@ export class SaleUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
+  protected onSaveError(): void {}
 
   protected onSaveFinalize(): void {
     this.isSaving = false;

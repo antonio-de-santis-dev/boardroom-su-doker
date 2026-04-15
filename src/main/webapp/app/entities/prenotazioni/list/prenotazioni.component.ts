@@ -53,7 +53,7 @@ export class PrenotazioniComponent implements OnInit {
   delete(prenotazioni: IPrenotazioni): void {
     const modalRef = this.modalService.open(PrenotazioniDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.prenotazioni = prenotazioni;
-    // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

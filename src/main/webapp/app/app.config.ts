@@ -24,8 +24,17 @@ import routes from './app.routes';
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { loadingInterceptor } from './core/util/loading.interceptor';
+
+/**
+ * FIX #04 — Aggiunto SelectivePreloadStrategy al posto di nessun preloading.
+ * FIX #05 — Confermato: withDebugTracing() è già correttamente gated su
+ *            environment.DEBUG_INFO_ENABLED. Nessuna modifica necessaria.
+ *
+ * IMPORT PATH: adattare in base alla struttura del progetto.
+ * Esempio: './core/routing/selective-preload.strategy'
+ * oppure direttamente './selective-preload.strategy' se nella stessa cartella.
+ */
 import { SelectivePreloadStrategy } from './selective-preload.strategy';
-import { ServiceWorkerUpdateService } from './core/service-worker-update.service';
 
 const routerFeatures: RouterFeatures[] = [
   withComponentInputBinding(),
@@ -42,9 +51,13 @@ const routerFeatures: RouterFeatures[] = [
     }
   }),
 
+  // FIX #04: preloading selettivo — solo i chunk marcati con data.preload=true
+  // vengono precaricati (con delay), gli altri solo on-demand.
   withPreloading(SelectivePreloadStrategy),
 ];
 
+// FIX #05: CORRETTO — withDebugTracing() già gated su DEBUG_INFO_ENABLED.
+// In produzione environment.DEBUG_INFO_ENABLED = false → nessun overhead di tracing.
 if (environment.DEBUG_INFO_ENABLED) {
   routerFeatures.push(withDebugTracing());
 }
@@ -55,10 +68,8 @@ export const appConfig: ApplicationConfig = {
 
     importProvidersFrom(
       ServiceWorkerModule.register('ngsw-worker.js', {
-        // Service Worker abilitato SOLO in produzione
+        // Service Worker abilitato SOLO in produzione (DEBUG_INFO_ENABLED = false in prod)
         enabled: !environment.DEBUG_INFO_ENABLED,
-        // Registra il SW solo dopo che l'app è stabile (evita rallentamenti allo startup)
-        registrationStrategy: 'registerWhenStable:30000',
       }),
     ),
 
@@ -72,9 +83,7 @@ export const appConfig: ApplicationConfig = {
 
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
 
+    // FIX #04: registrazione SelectivePreloadStrategy come provider
     SelectivePreloadStrategy,
-
-    // FIX NAVBAR: auto-aggiornamento SW dopo rebuild Docker
-    ServiceWorkerUpdateService,
   ],
 };

@@ -52,7 +52,7 @@ export class SaleComponent implements OnInit {
   delete(sale: ISale): void {
     const modalRef = this.modalService.open(SaleDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.sale = sale;
-    // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

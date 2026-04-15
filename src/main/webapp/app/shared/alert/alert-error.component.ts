@@ -56,7 +56,6 @@ export class AlertErrorComponent implements OnDestroy {
   private handleHttpError(response: EventWithContent<unknown> | string): void {
     const httpErrorResponse = (response as EventWithContent<HttpErrorResponse>).content;
     switch (httpErrorResponse.status) {
-      // connection refused, server not reachable
       case 0:
         this.addErrorAlert('Server not reachable');
         break;
@@ -108,7 +107,7 @@ export class AlertErrorComponent implements OnDestroy {
       if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
         fieldError.message = 'Size';
       }
-      // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
+
       const convertedField: string = fieldError.field.replace(/\[\d*\]/g, '[]');
       const fieldName: string = convertedField.charAt(0).toUpperCase() + convertedField.slice(1);
       this.addErrorAlert(`Error on field "${fieldName}"`);

@@ -16,7 +16,6 @@ export default class HealthModalComponent {
 
   readableValue(value: any): string {
     if (this.health?.key === 'diskSpace') {
-      // should display storage space in a human readable unit
       const val = value / 1073741824;
       if (val > 1) {
         return `${val.toFixed(2)} GB`;

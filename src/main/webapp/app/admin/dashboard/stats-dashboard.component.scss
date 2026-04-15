@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// Boardroom – Admin Dashboard Styles
-// ─────────────────────────────────────────────────────────────
-
 $surface: #ffffff;
 $bg: #f8fafc;
 $border: #e2e8f0;
@@ -22,8 +18,6 @@ $shadow-md:
   0 4px 6px -1px rgba(0, 0, 0, 0.07),
   0 2px 4px -2px rgba(0, 0, 0, 0.04);
 
-// ── Page layout ──────────────────────────────────────────────
-
 .dash-page {
   padding: 28px 32px;
   max-width: 1280px;
@@ -35,8 +29,6 @@ $shadow-md:
     padding: 16px;
   }
 }
-
-// ── Header ───────────────────────────────────────────────────
 
 .dash-header {
   display: flex;
@@ -61,7 +53,6 @@ $shadow-md:
   margin: 2px 0 0;
 }
 
-// Periodo toggle
 .dash-periodo {
   display: flex;
   background: $surface;
@@ -98,8 +89,6 @@ $shadow-md:
     cursor: not-allowed;
   }
 }
-
-// ── Loading / Error ──────────────────────────────────────────
 
 .dash-loading {
   display: flex;
@@ -146,8 +135,6 @@ $shadow-md:
     }
   }
 }
-
-// ── KPI Grid ─────────────────────────────────────────────────
 
 .kpi-grid {
   display: grid;
@@ -227,8 +214,6 @@ $shadow-md:
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-
-// ── Chart grid ───────────────────────────────────────────────
 
 .chart-grid {
   display: grid;
@@ -337,8 +322,6 @@ $shadow-md:
   color: $text-muted;
   font-size: 0.875rem;
 }
-
-// ── Gestione sale ────────────────────────────────────────────
 
 .sale-section {
   background: $surface;
@@ -483,8 +466,6 @@ $shadow-md:
   color: $text-muted;
   font-size: 0.875rem;
 }
-
-// ── Modal ────────────────────────────────────────────────────
 
 .modal-overlay {
   position: fixed;
@@ -667,7 +648,6 @@ $shadow-md:
   }
 }
 
-// ── Bottone foto nella sala-card ──────────────────────────────
 .sala-btn--photo {
   background: #f0f9ee;
   color: #4a8c40;
@@ -678,7 +658,6 @@ $shadow-md:
   }
 }
 
-// ── Modal upload foto ─────────────────────────────────────────
 .foto-preview {
   text-align: center;
   margin-bottom: 16px;
@@ -765,7 +744,6 @@ $shadow-md:
   color: #dc2626;
 }
 
-// Footer con bottone rimuovi a sinistra e azioni a destra
 .modal-footer {
   display: flex;
   justify-content: space-between;

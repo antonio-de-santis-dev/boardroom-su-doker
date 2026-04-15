@@ -52,7 +52,7 @@ export class EventiComponent implements OnInit {
   delete(eventi: IEventi): void {
     const modalRef = this.modalService.open(EventiDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.eventi = eventi;
-    // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

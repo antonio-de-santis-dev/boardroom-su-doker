@@ -37,7 +37,6 @@ export class PrenotazioniUpdateComponent implements OnInit {
   protected saleService = inject(SaleService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: PrenotazioniFormGroup = this.prenotazioniFormService.createPrenotazioniFormGroup();
 
   compareStatiPrenotazione = (o1: IStatiPrenotazione | null, o2: IStatiPrenotazione | null): boolean =>
@@ -83,9 +82,7 @@ export class PrenotazioniUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
+  protected onSaveError(): void {}
 
   protected onSaveFinalize(): void {
     this.isSaving = false;

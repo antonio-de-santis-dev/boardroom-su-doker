@@ -58,7 +58,6 @@
         </li>
 
         @if (hasAnyAuthority('ROLE_ADMIN')) {
-          <!-- Dashboard: link diretto, sempre visibile per admin -->
           <li class="nav-item" routerLinkActive="active">
             <a class="nav-link admin-link" routerLink="/admin/dashboard" (click)="collapseNavbar()">
               <span>Dashboard</span>

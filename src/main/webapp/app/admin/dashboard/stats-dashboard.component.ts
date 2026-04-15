@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { StatsDashboardService, StatsDashboard, SalaAdmin, Periodo } from './stats-dashboard.service';
 import { NotificationService } from 'app/shared/notification/notification.service';
 
-// Chart.js caricato via CDN nel componente — nessuna dipendenza npm necessaria
 declare const Chart: any;
 
 @Component({
@@ -20,13 +19,11 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
   private notify = inject(NotificationService);
   private http = inject(HttpClient);
 
-  // ── Stato UI ──────────────────────────────────────────
   isLoading = signal(true);
   hasError = signal(false);
   stats = signal<StatsDashboard | null>(null);
   periodo = signal<Periodo>('1m');
 
-  // ── Sale management ───────────────────────────────────
   sale = signal<SalaAdmin[]>([]);
   showSalaForm = signal(false);
   editingSala = signal<SalaAdmin | null>(null);
@@ -34,15 +31,12 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
   salaLoading = signal(false);
   showDeleteConfirm = signal<string | null>(null);
 
-  // ── Upload foto sala ──────────────────────────────────
-  // SalaConFoto estende SalaAdmin localmente per non dipendere dal service
   salaFotoSelezionata = signal<(SalaAdmin & { imageUrl?: string | null }) | null>(null);
   fotoLoading = signal(false);
   fotoErrore = signal<string | null>(null);
   fileSelezionato: File | null = null;
   isDragOver = false;
 
-  // ── Istanze Chart.js ──────────────────────────────────
   private charts: any[] = [];
   private chartJsLoaded = false;
 
@@ -51,8 +45,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
     { value: '3m', label: 'Ultimi 3 mesi' },
     { value: '1y', label: 'Ultimo anno' },
   ];
-
-  // ── Lifecycle ─────────────────────────────────────────
 
   ngOnInit(): void {
     this.caricaStats();
@@ -69,8 +61,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
     this.distruggiCharts();
   }
 
-  // ── Dati ──────────────────────────────────────────────
-
   caricaStats(): void {
     this.isLoading.set(true);
     this.hasError.set(false);
@@ -78,7 +68,7 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       next: data => {
         this.stats.set(data);
         this.isLoading.set(false);
-        // Aspetta un tick per assicurarsi che i canvas siano nel DOM
+
         setTimeout(() => this.renderCharts(), 50);
       },
       error: () => {
@@ -94,8 +84,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
     this.distruggiCharts();
     this.caricaStats();
   }
-
-  // ── Chart.js ──────────────────────────────────────────
 
   private async caricaChartJs(): Promise<void> {
     if (this.chartJsLoaded || typeof Chart !== 'undefined') {
@@ -132,7 +120,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       },
     };
 
-    // ── G1: Prenotazioni per sala (bar orizzontale) ───────
     this.creaChart('chartSale', {
       type: 'bar',
       data: {
@@ -157,7 +144,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       },
     });
 
-    // ── G2: Ore più richieste (line chart) ────────────────
     this.creaChart('chartOre', {
       type: 'line',
       data: {
@@ -179,7 +165,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       options: defaults,
     });
 
-    // ── G3: Tasso occupazione per mese (line) ─────────────
     this.creaChart('chartMesi', {
       type: 'line',
       data: {
@@ -207,7 +192,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       },
     });
 
-    // ── G4: Top 5 utenti (bar verticale) ─────────────────
     this.creaChart('chartUtenti', {
       type: 'bar',
       data: {
@@ -224,7 +208,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       options: defaults,
     });
 
-    // ── G5: Per giorno settimana (doughnut) ───────────────
     this.creaChart('chartGiorni', {
       type: 'doughnut',
       data: {
@@ -270,8 +253,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
     });
     this.charts = [];
   }
-
-  // ── Gestione Sale ─────────────────────────────────────
 
   caricaSale(): void {
     this.statsService.getSale().subscribe({
@@ -342,11 +323,7 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
     });
   }
 
-  // ── Upload foto sala ──────────────────────────────────
-
   apriUploadFoto(sala: SalaAdmin): void {
-    // Usa i dati gia in memoria - caricati da caricaSale() che chiama GET /api/admin/sale
-    // che passa per SaleService.findOne() che normalizza gia l'imageUrl
     this.salaFotoSelezionata.set({ ...sala });
     this.fileSelezionato = null;
     this.fotoErrore.set(null);
@@ -404,9 +381,9 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
         this.fotoLoading.set(false);
         this.notify.show('Foto caricata con successo! 📷', 'success');
         this.fileSelezionato = null;
-        // Ricarica la lista aggiornata (imageUrl normalizzato dal SaleService)
+
         this.caricaSale();
-        // Aggiorna il popup con l'imageUrl corretto dalla risposta
+
         const upd = updated as SalaAdmin & { imageUrl?: string | null };
         this.salaFotoSelezionata.set({ ...sala, imageUrl: upd.imageUrl ?? null });
       },
@@ -435,8 +412,6 @@ export default class StatsDashboardComponent implements OnInit, AfterViewInit, O
       },
     });
   }
-
-  // ── Template helpers ──────────────────────────────────
 
   formatPercent(v: number): string {
     return v.toFixed(1) + '%';

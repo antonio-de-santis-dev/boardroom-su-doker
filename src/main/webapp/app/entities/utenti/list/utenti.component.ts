@@ -50,7 +50,7 @@ export class UtentiComponent implements OnInit {
   delete(utenti: IUtenti): void {
     const modalRef = this.modalService.open(UtentiDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.utenti = utenti;
-    // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

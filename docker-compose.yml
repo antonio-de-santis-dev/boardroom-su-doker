@@ -1,7 +1,6 @@
 name: boardroom
 
 services:
-
   # ─── DATABASE MYSQL ──────────────────────────────────────────
   mysql:
     image: mysql:9.2.0
@@ -10,9 +9,9 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
     ports:
-      - "127.0.0.1:3307:3306"
+      - '127.0.0.1:3307:3306'
     volumes:
       - mysql_data:/var/lib/mysql
       - ./src/main/docker/config/mysql:/etc/mysql/conf.d:ro
@@ -24,7 +23,7 @@ services:
       --collation_server=utf8mb4_unicode_ci
       --explicit_defaults_for_timestamp
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}"]
+      test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}']
       interval: 10s
       timeout: 10s
       retries: 10
@@ -57,18 +56,21 @@ services:
       SPRING_MAIL_PORT: ${MAIL_PORT}
       SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: 'true'
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: 'true'
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED: 'true'
       JHIPSTER_MAIL_FROM: ${MAIL_FROM}
       JHIPSTER_MAIL_BASE_URL: http://localhost:8080
 
     ports:
-      - "0.0.0.0:8080:8080"
+      - '0.0.0.0:8080:8080'
+    volumes:
+      - boardroom_uploads:/app/uploads
     depends_on:
       mysql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/management/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/management/health']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -79,6 +81,8 @@ services:
 # ─── VOLUMI PERSISTENTI ──────────────────────────────────────
 volumes:
   mysql_data:
+    driver: local
+  boardroom_uploads:
     driver: local
 
 # ─── RETE INTERNA ────────────────────────────────────────────

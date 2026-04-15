@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// Boardroom – Ricorrenza Form Styles
-// ─────────────────────────────────────────────────────────────
-
 $accent: #3b82f6;
 $accent-light: #eff6ff;
 $green: #10b981;
@@ -20,7 +16,6 @@ $shadow-lg:
   0 20px 25px -5px rgba(0, 0, 0, 0.1),
   0 10px 10px -5px rgba(0, 0, 0, 0.06);
 
-// Overlay scuro dietro il pannello
 .ric-overlay {
   position: fixed;
   inset: 0;
@@ -49,7 +44,6 @@ $shadow-lg:
   }
 }
 
-// Pannello principale
 .ric-panel {
   position: fixed;
   bottom: 0;
@@ -75,7 +69,6 @@ $shadow-lg:
   }
 }
 
-// Header
 .ric-header {
   display: flex;
   align-items: center;
@@ -130,7 +123,6 @@ $shadow-lg:
   }
 }
 
-// Body
 .ric-body {
   padding: 20px 22px;
   display: flex;
@@ -138,7 +130,6 @@ $shadow-lg:
   gap: 18px;
 }
 
-// Field base
 .ric-field {
   display: flex;
   flex-direction: column;
@@ -176,7 +167,6 @@ $shadow-lg:
   }
 }
 
-// Row affiancata
 .ric-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -190,7 +180,6 @@ $shadow-lg:
   }
 }
 
-// Frequenza bottoni
 .ric-freq-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -241,7 +230,6 @@ $shadow-lg:
   }
 }
 
-// Giorni della settimana
 .ric-giorni {
   display: flex;
   gap: 6px;
@@ -272,7 +260,6 @@ $shadow-lg:
   }
 }
 
-// Fine serie toggle
 .ric-fine-toggle {
   display: flex;
   background: $surface-muted;
@@ -319,7 +306,6 @@ $shadow-lg:
   color: $text-secondary;
 }
 
-// Stima occorrenze
 .ric-stima {
   display: flex;
   align-items: center;
@@ -332,7 +318,6 @@ $shadow-lg:
   font-weight: 600;
 }
 
-// Risultato post-creazione
 .ric-risultato {
   padding: 16px 22px;
   display: flex;
@@ -371,7 +356,6 @@ $shadow-lg:
   }
 }
 
-// Footer
 .ric-footer {
   display: flex;
   justify-content: flex-end;

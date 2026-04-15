@@ -3,8 +3,8 @@ import { Router, RouterOutlet } from '@angular/router';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
-import { LoadingService } from 'app/core/util/loading.service'; // Import aggiunto
-import FooterComponent from '../footer/footer.component';
+import { LoadingService } from 'app/core/util/loading.service';
+import { FooterComponent } from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 
 @Component({

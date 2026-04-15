@@ -1,7 +1,6 @@
 <div class="ric-overlay" (click)="annulla()"></div>
 
 <div class="ric-panel" role="dialog" aria-modal="true" aria-label="Nuova prenotazione ricorrente">
-  <!-- Header -->
   <div class="ric-header">
     <div class="ric-header__icon">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -21,7 +20,6 @@
     </button>
   </div>
 
-  <!-- Risultato post-creazione -->
   @if (risultato()) {
     <div class="ric-risultato">
       <div class="ric-risultato__ok">
@@ -46,7 +44,6 @@
     </div>
   }
 
-  <!-- Form -->
   @if (!risultato()) {
     <div class="ric-body">
       <!-- Sala -->
@@ -60,7 +57,6 @@
         </select>
       </div>
 
-      <!-- Frequenza -->
       <div class="ric-field">
         <label class="ric-label">Frequenza</label>
         <div class="ric-freq-grid">
@@ -78,7 +74,6 @@
         </div>
       </div>
 
-      <!-- Giorni della settimana (solo WEEKLY / BIWEEKLY) -->
       @if (mostraGiorni) {
         <div class="ric-field">
           <label class="ric-label">Giorni della settimana</label>
@@ -92,7 +87,6 @@
         </div>
       }
 
-      <!-- Orari -->
       <div class="ric-row">
         <div class="ric-field">
           <label class="ric-label">Ora inizio</label>
@@ -108,13 +102,11 @@
         </div>
       </div>
 
-      <!-- Date -->
       <div class="ric-field">
         <label class="ric-label">Data inizio</label>
         <input class="ric-input" type="date" [(ngModel)]="dataInizio" name="dataInizio" [min]="oggi" />
       </div>
 
-      <!-- Tipo fine serie -->
       <div class="ric-field">
         <label class="ric-label">Fine serie</label>
         <div class="ric-fine-toggle">
@@ -140,7 +132,6 @@
         }
       </div>
 
-      <!-- Anteprima stima -->
       @if (stimaOccorrenze) {
         <div class="ric-stima">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -153,7 +144,6 @@
       }
     </div>
 
-    <!-- Footer -->
     <div class="ric-footer">
       <button class="ric-btn ric-btn--secondary" type="button" (click)="annulla()">Annulla</button>
       <button class="ric-btn ric-btn--primary" type="button" (click)="invia()" [disabled]="isLoading()">

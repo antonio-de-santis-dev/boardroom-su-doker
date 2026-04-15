@@ -26,7 +26,6 @@ export class StatiPrenotazioneUpdateComponent implements OnInit {
   protected statiPrenotazioneFormService = inject(StatiPrenotazioneFormService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: StatiPrenotazioneFormGroup = this.statiPrenotazioneFormService.createStatiPrenotazioneFormGroup();
 
   ngOnInit(): void {
@@ -63,9 +62,7 @@ export class StatiPrenotazioneUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
+  protected onSaveError(): void {}
 
   protected onSaveFinalize(): void {
     this.isSaving = false;

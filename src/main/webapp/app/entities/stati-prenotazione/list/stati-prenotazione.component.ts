@@ -50,7 +50,7 @@ export class StatiPrenotazioneComponent implements OnInit {
   delete(statiPrenotazione: IStatiPrenotazione): void {
     const modalRef = this.modalService.open(StatiPrenotazioneDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.statiPrenotazione = statiPrenotazione;
-    // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),

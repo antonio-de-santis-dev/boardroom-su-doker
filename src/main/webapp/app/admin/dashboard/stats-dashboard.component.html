@@ -1,12 +1,10 @@
 <div class="dash-page">
-  <!-- ── HEADER ───────────────────────────────────────── -->
   <div class="dash-header">
     <div class="dash-header__left">
       <h1 class="dash-title">Dashboard</h1>
       <p class="dash-sub">Statistiche prenotazioni sale</p>
     </div>
 
-    <!-- Filtro periodo -->
     <div class="dash-periodo">
       @for (opt of periodoOptions; track opt.value) {
         <button
@@ -21,7 +19,6 @@
     </div>
   </div>
 
-  <!-- ── LOADING ──────────────────────────────────────── -->
   @if (isLoading()) {
     <div class="dash-loading">
       <div class="dash-spinner"></div>
@@ -29,7 +26,6 @@
     </div>
   }
 
-  <!-- ── ERROR ────────────────────────────────────────── -->
   @if (hasError() && !isLoading()) {
     <div class="dash-error">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -43,7 +39,6 @@
   }
 
   @if (stats() && !isLoading()) {
-    <!-- ── KPI CARDS ─────────────────────────────────── -->
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon--blue">
@@ -102,9 +97,7 @@
       </div>
     </div>
 
-    <!-- ── GRAFICI RIGA 1 ────────────────────────────── -->
     <div class="chart-grid chart-grid--2col">
-      <!-- G1: Prenotazioni per sala -->
       <div class="chart-card">
         <div class="chart-card__header">
           <h3 class="chart-card__title">Prenotazioni per sala</h3>
@@ -119,7 +112,6 @@
         </div>
       </div>
 
-      <!-- G2: Ore più richieste -->
       <div class="chart-card">
         <div class="chart-card__header">
           <h3 class="chart-card__title">Ore più richieste</h3>
@@ -135,9 +127,7 @@
       </div>
     </div>
 
-    <!-- ── GRAFICI RIGA 2 ────────────────────────────── -->
     <div class="chart-grid chart-grid--3col">
-      <!-- G3: Tasso occupazione per mese -->
       <div class="chart-card chart-card--wide">
         <div class="chart-card__header">
           <h3 class="chart-card__title">Tasso di occupazione mensile</h3>
@@ -152,7 +142,6 @@
         </div>
       </div>
 
-      <!-- G4: Top 5 utenti -->
       <div class="chart-card">
         <div class="chart-card__header">
           <h3 class="chart-card__title">Top 5 utenti attivi</h3>
@@ -168,7 +157,6 @@
       </div>
     </div>
 
-    <!-- ── GRAFICO RIGA 3 ────────────────────────────── -->
     <div class="chart-grid chart-grid--1col">
       <div class="chart-card chart-card--donut">
         <div class="chart-card__header">
@@ -186,9 +174,6 @@
     </div>
   }
 
-  <!-- ══════════════════════════════════════════════════
-       GESTIONE SALE
-  ══════════════════════════════════════════════════ -->
   <div class="sale-section">
     <div class="sale-header">
       <div>
@@ -240,9 +225,6 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     MODAL: Form sala
-══════════════════════════════════════════════════ -->
 @if (showSalaForm()) {
   <div class="modal-overlay" (click)="chiudiSalaForm()"></div>
   <div class="modal-box" role="dialog">
@@ -276,9 +258,6 @@
   </div>
 }
 
-<!-- ══════════════════════════════════════════════════
-     MODAL: Conferma elimina
-══════════════════════════════════════════════════ -->
 @if (showDeleteConfirm()) {
   <div class="modal-overlay" (click)="showDeleteConfirm.set(null)"></div>
   <div class="modal-box modal-box--sm" role="dialog">
@@ -295,9 +274,6 @@
   </div>
 }
 
-<!-- ══════════════════════════════════════════════════
-     MODAL: Upload foto sala
-══════════════════════════════════════════════════ -->
 @if (salaFotoSelezionata()) {
   <div class="modal-overlay" (click)="chiudiUploadFoto()"></div>
   <div class="modal-box" role="dialog">
@@ -306,7 +282,6 @@
       <button class="modal-close" (click)="chiudiUploadFoto()">✕</button>
     </div>
     <div class="modal-body">
-      <!-- Anteprima immagine corrente -->
       @if (salaFotoSelezionata()!.imageUrl) {
         <div class="foto-preview">
           <img [src]="salaFotoSelezionata()!.imageUrl!" alt="Foto attuale" class="foto-preview__img" />
@@ -319,7 +294,6 @@
         </div>
       }
 
-      <!-- Zona drop / selezione file -->
       <div
         class="foto-drop-zone"
         [class.foto-drop-zone--dragover]="isDragOver"
@@ -343,7 +317,6 @@
         <input #fileInput type="file" accept="image/jpeg,image/png,image/webp" (change)="onFileChange($event)" style="display: none" />
       </div>
 
-      <!-- Errore -->
       @if (fotoErrore()) {
         <div class="foto-errore">⚠️ {{ fotoErrore() }}</div>
       }

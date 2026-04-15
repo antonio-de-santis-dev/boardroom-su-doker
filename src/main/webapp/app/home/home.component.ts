@@ -27,11 +27,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   activeSlide = 0;
 
-  // ── Drag / Swipe ─────────────────────────────────────────
   isDragging = false;
   private dragStartX = 0;
   private touchStartX = 0;
-  private readonly DRAG_THRESHOLD = 50; // px minimi per cambiare slide
+  private readonly DRAG_THRESHOLD = 50;
 
   private readonly destroy$ = new Subject<void>();
   private readonly accountService = inject(AccountService);
@@ -97,18 +96,14 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.activeSlide < this.eventi().length - 1) this.goToSlide(this.activeSlide + 1);
   }
 
-  // ── Mouse drag ────────────────────────────────────────────
-
   onDragStart(e: MouseEvent): void {
     this.isDragging = true;
     this.dragStartX = e.clientX;
-    e.preventDefault(); // evita selezione testo durante il drag
+    e.preventDefault();
   }
 
   onDragMove(e: MouseEvent): void {
     if (!this.isDragging) return;
-    // Feedback visivo opzionale: si potrebbe spostare il track in tempo reale
-    // Per semplicità gestiamo solo il release
   }
 
   onDragEnd(e?: MouseEvent): void {
@@ -117,12 +112,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (!e) return;
     const delta = e.clientX - this.dragStartX;
     if (Math.abs(delta) < this.DRAG_THRESHOLD) return;
-    if (delta < 0)
-      this.nextSlide(); // trascinato verso sinistra → slide successiva
-    else this.prevSlide(); // trascinato verso destra  → slide precedente
+    if (delta < 0) this.nextSlide();
+    else this.prevSlide();
   }
-
-  // ── Touch swipe ───────────────────────────────────────────
 
   onTouchStart(e: TouchEvent): void {
     this.touchStartX = e.touches[0].clientX;
@@ -135,7 +127,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
     else this.prevSlide();
   }
 
-  /** Fallback carosello: se l'immagine non carica mostra il placeholder verde */
   onHeroImgError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.style.display = 'none';
@@ -143,7 +134,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (placeholder) placeholder.style.display = 'flex';
   }
 
-  /** Fallback card evento: se l'immagine non carica mostra il placeholder emoji */
   onCardImgError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.style.display = 'none';
